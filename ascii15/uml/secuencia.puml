@@ -1,0 +1,185 @@
+@startuml
+' ASII-15 - Diagrama de Secuencia
+' Proceso: Creacion de prescripcion con verificacion previa de alergias.
+' Datos ficticios: Dr(a). Demo 1, paciente PAC-DEM-0001, Amoxicilina 500 mg.
+
+title ASII-15 - Diagrama de Secuencia\nCreacion de prescripcion con verificacion previa de alergias
+
+actor "Medico" as MEDICO
+participant "Interfaz del HIS" as UI
+participant "API del HIS\n(/api/v1)" as API
+participant "Controlador de\nPrescripciones" as CTRL
+participant "Servicio de Validacion\nde Alergias" as SVC
+participant "Repositorio de Pacientes\n(Eloquent Patient)" as PAT
+participant "Repositorio de Medicamentos\n(Eloquent Medication)" as MED
+participant "Repositorio de Alergias\n(Eloquent Allergy)" as ALG
+participant "Repositorio de Prescripciones\n(Eloquent Prescription)" as RX
+database "Base de Datos" as DB
+
+note over UI, RX
+  Participantes logicos de diseno.
+
+  En el repositorio actual las consultas usan los modelos Eloquent:
+  Patient, Medication, Allergy y Prescription.
+
+  La API real utiliza /api/v1 con los middleware tenant y jwt.auth.
+
+  El controlador, el servicio de validacion, la interfaz de prescripcion
+  y la capa de repositorios son propuestas para este modulo.
+end note
+
+MEDICO -> UI : Solicitar creacion de prescripcion\n(paciente, medicamento y datos)
+
+UI -> API : POST /api/v1/prescriptions\nBearer JWT + X-Tenant-ID
+
+API -> CTRL : Enrutar solicitud
+
+note right of API
+  Validar autenticacion,
+  rol Medico y tenant.
+end note
+
+CTRL -> PAT : Consultar paciente\n(id, tenant_id)
+
+PAT -> DB : Buscar paciente por id y tenant
+DB --> PAT : Paciente encontrado o resultado vacio
+
+alt Paciente inexistente o fuera del tenant
+
+    PAT --> CTRL : Paciente no encontrado
+    CTRL --> UI : Error 404 - Paciente no encontrado
+    UI --> MEDICO : Mostrar error
+
+else Paciente valido
+
+    PAT --> CTRL : Datos del paciente
+
+    CTRL -> MED : Validar medicamento\n(id, active, tenant_id)
+
+    MED -> DB : Buscar medicamento activo por id y tenant
+    DB --> MED : Medicamento encontrado o resultado vacio
+
+    alt Medicamento inexistente o inactivo
+
+        MED --> CTRL : Medicamento invalido
+        CTRL --> UI : Error 422 - Medicamento no disponible
+        UI --> MEDICO : Mostrar error
+
+    else Medicamento valido
+
+        MED --> CTRL : Datos del medicamento
+
+        CTRL -> SVC : Validar alergias\n(paciente_id, medicamento_id)
+
+        SVC -> ALG : Consultar alergias activas\n(paciente_id)
+
+        ALG -> DB : Buscar alergias activas del paciente
+        DB --> ALG : Lista de alergias o resultado vacio
+
+        alt Error al consultar alergias
+
+            ALG --> SVC : Error de consulta
+            SVC --> CTRL : Fallo al consultar alergias
+            CTRL --> UI : Error 503 - No se pudieron consultar alergias
+            UI --> MEDICO : Mostrar error
+
+        else Consulta correcta
+
+            ALG --> SVC : Alergias activas del paciente
+
+            SVC -> SVC : Comparar medicamento\ncontra alergias activas
+
+            alt Coincidencia de alergia detectada
+
+                SVC --> CTRL : Riesgo detectado\nblocked = true
+
+                CTRL --> UI : Enviar alerta de alergia
+                UI --> MEDICO : Mostrar alerta de alergia
+
+                loop Mientras el Medico modifica la prescripcion
+
+                    MEDICO -> UI : Modificar medicamento o datos
+                    UI -> CTRL : Enviar prescripcion modificada
+
+                    CTRL -> MED : Validar nuevo medicamento
+                    MED -> DB : Consultar medicamento activo
+                    DB --> MED : Datos del medicamento
+                    MED --> CTRL : Medicamento valido
+
+                    CTRL -> SVC : Revalidar prescripcion
+                    SVC -> ALG : Reconsultar alergias activas
+
+                    ALG -> DB : Buscar alergias activas
+                    DB --> ALG : Lista de alergias
+                    ALG --> SVC : Alergias activas
+
+                    SVC -> SVC : Comparar nuevo medicamento\ncontra alergias
+                    SVC --> CTRL : Resultado de revalidacion
+
+                end
+
+                alt El Medico cancela la prescripcion
+
+                    MEDICO -> UI : Cancelar prescripcion
+                    UI --> MEDICO : Prescripcion cancelada\nNo se guarda
+
+                else Prescripcion modificada sin bloqueo
+
+                    CTRL --> UI : Prescripcion valida\nblocked = false
+                    UI --> MEDICO : Solicitar confirmacion
+
+                end
+
+            else Sin coincidencia de alergia
+
+                SVC --> CTRL : Validacion exitosa\nblocked = false
+                CTRL --> UI : Prescripcion valida
+                UI --> MEDICO : Solicitar confirmacion
+
+            end
+
+        end
+
+    end
+
+end
+
+opt Prescripcion confirmada y sin bloqueo
+
+    MEDICO -> UI : Confirmar prescripcion
+
+    UI -> API : Confirmar y guardar prescripcion
+
+    API -> CTRL : Procesar guardado
+
+    CTRL -> RX : Crear registro de prescripcion\npaciente, medico, medicamento,\ndosis, frecuencia, duracion,\nvia e indicaciones
+
+    RX -> DB : Guardar prescripcion
+
+    alt Error al guardar
+
+        DB --> RX : Error de almacenamiento
+        RX --> CTRL : Fallo de guardado
+        CTRL --> UI : Error 500 - No se pudo guardar
+        UI --> MEDICO : Mostrar error
+
+    else Guardado correcto
+
+        DB --> RX : Prescripcion registrada
+        RX --> CTRL : Registro creado correctamente
+        CTRL --> UI : Respuesta 201 - Prescripcion guardada
+        UI --> MEDICO : Mostrar resultado exitoso
+
+    end
+
+end
+
+note over MEDICO
+  El Medico conserva la decision final:
+  modificar, cancelar o confirmar.
+
+  El sistema apoya la decision medica,
+  pero no sustituye al profesional.
+end note
+
+@enduml

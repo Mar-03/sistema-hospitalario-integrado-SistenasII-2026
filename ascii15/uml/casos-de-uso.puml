@@ -1,0 +1,70 @@
+@startuml
+' ASII-15 - Diagrama de Casos de Uso
+' Proceso: Creacion de prescripcion con verificacion previa de alergias.
+' Actor: Medico (rol "Medico" existe en RoleSeeder.php).
+' Paciente = entidad consultada (tabla patients), NO actor.
+' HIS = limite del sistema, NO actor.
+' Datos ficticios: Dr(a). Demo 1, paciente PAC-DEM-0001, Amoxicilina 500mg.
+
+left to right direction
+skinparam packageStyle rectangle
+
+title ASII-15 - Casos de Uso\nCreacion de prescripcion con verificacion previa de alergias
+
+actor "Medico" as Medico
+
+rectangle "Sistema Hospitalario Integrado\nModulo de Prescripciones Electronicas" as LMTD {
+
+  usecase "Crear prescripcion electronica" as UC_Crear
+  usecase "Seleccionar paciente existente" as UC_Paciente
+  usecase "Ingresar datos de prescripcion" as UC_Datos
+  usecase "Seleccionar medicamento activo" as UC_Med
+  usecase "Consultar alergias activas" as UC_Alergias
+  usecase "Validar medicamento contra alergias" as UC_Validar
+  usecase "Mostrar alerta de alergia" as UC_Alerta
+  usecase "Modificar prescripcion" as UC_Modificar
+  usecase "Confirmar prescripcion" as UC_Confirmar
+  usecase "Guardar prescripcion" as UC_Guardar
+
+  Medico --> UC_Crear
+  Medico --> UC_Modificar
+
+  ' <<include>>: comportamiento obligatorio; la flecha va del caso base al caso incluido.
+  UC_Crear ..> UC_Paciente : <<include>>
+  UC_Crear ..> UC_Datos : <<include>>
+  UC_Crear ..> UC_Med : <<include>>
+  UC_Crear ..> UC_Validar : <<include>>
+  UC_Validar ..> UC_Alergias : <<include>>
+  UC_Crear ..> UC_Confirmar : <<include>>
+  UC_Crear ..> UC_Guardar : <<include>>
+
+  ' <<extend>>: comportamiento condicional; la flecha va del caso condicional al caso base.
+  UC_Alerta ..> UC_Crear : <<extend>>
+  UC_Modificar ..> UC_Crear : <<extend>>
+
+  note right of UC_Alerta
+    Ocurre unicamente cuando la validacion detecta una
+    coincidencia entre el medicamento y una alergia activa.
+    Punto de extension: tras "Validar medicamento contra alergias".
+  end note
+
+  note right of UC_Modificar
+    Se dispara tras la alerta; el Medico modifica el
+    medicamento o los datos y el flujo revalida alergias.
+    Punto de extension: revision de alerta.
+  end note
+
+  note right of UC_Guardar
+    Solo tras confirmacion y cuando blocked = false.
+    El esquema no permite representar una prescripcion
+    bloqueada como guardada (prescriptions.blocked).
+  end note
+
+  note bottom of UC_Validar
+    Mecanismo de referencia en el repositorio:
+    comparacion de allergen contra name/generic_name
+    (DemoDataSeeder2026.php:375-396).
+  end note
+}
+
+@enduml

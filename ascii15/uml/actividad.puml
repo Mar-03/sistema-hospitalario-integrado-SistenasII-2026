@@ -1,0 +1,73 @@
+@startuml
+' ASII-15 - Diagrama de Actividad
+' Proceso: Creacion de prescripcion con verificacion previa de alergias.
+' Datos ficticios: Dr(a). Demo 1, paciente PAC-DEM-0001,
+' Amoxicilina 500 mg c/8 h, via oral, 7 dias.
+
+title ASII-15 - Diagrama de Actividad\nCreacion de prescripcion con verificacion previa de alergias
+
+start
+note right
+  Precondicion: Medico autenticado (JWT) y autorizado (rol "Medico").
+  El acceso ya esta controlado por tenant (X-Tenant-ID) y jwt.auth.
+end note
+
+:Seleccionar paciente existente;
+:Validar paciente y tenant;
+
+if (Paciente valido y dentro del tenant?) then (No)
+  :Mostrar error: paciente inexistente o fuera del tenant;
+  stop
+else (Si)
+endif
+
+repeat
+  :Ingresar medicamento(s) y datos de la prescripcion\n(dosis, frecuencia, duracion, via, indicaciones);
+  :Validar datos de prescripcion;
+repeat while (Datos completos y validos?) is (No) not (Si)
+
+repeat
+  :Consultar alergias activas del paciente;
+
+  if (Se pudieron consultar las alergias?) then (No)
+    :Mostrar error: no se pudo consultar el historial de alergias;
+    stop
+  endif
+
+  :Comparar medicamento(s) contra alergias activas;
+
+  if (Existe coincidencia con una alergia activa?) then (No)
+    note right
+      Sin alergias registradas o sin coincidencia
+      -> flujo sin alerta; se continua con confirmacion.
+    end note
+  else (Si)
+    :Mostrar alerta de alergia;
+
+    if (El Medico modifica o cancela?) then (Modificar)
+      :Modificar prescripcion\n(cambiar medicamento o datos);
+    else (Cancelar)
+      :Prescripcion cancelada; no se guarda;
+      stop
+    endif
+  endif
+repeat while (Prescripcion sin bloqueo?) is (No) not (Si)
+
+:Confirmar prescripcion;
+
+note right
+  Solo se llega aqui con blocked = false.
+  No se guarda una prescripcion bloqueada.
+end note
+
+:Guardar prescripcion;
+
+if (Guardado exitoso?) then (No)
+  :Mostrar error: no se pudo guardar la prescripcion;
+  stop
+else (Si)
+  :Informar resultado exitoso al Medico;
+  stop
+endif
+
+@enduml
