@@ -1,0 +1,82 @@
+@startuml
+' ASII-15 - Semana 2
+' Diseno antes/despues aplicando DIP al modulo de prescripciones.
+' Datos ficticios: PAC-DEM-0001, Amoxicilina 500 mg, TENANT-DEMO-01.
+
+title ASII-15 - Semana 2\nDiseno antes/despues aplicando DIP
+
+skinparam componentStyle rectangle
+left to right direction
+
+package "Antes: alto nivel depende de clases concretas" as BEFORE {
+  actor "Medico" as MedicoAntes
+  component "PrescriptionController" as CtrlAntes
+  component "CreatePrescriptionAction" as ActionAntes
+  component "EloquentPatientRepository" as PatientConcreteAntes
+  component "EloquentMedicationRepository" as MedicationConcreteAntes
+  component "DefaultAllergyValidationService" as AllergyConcreteAntes
+  component "EloquentPrescriptionRepository" as PrescriptionConcreteAntes
+  database "Base de Datos" as DbAntes
+
+  MedicoAntes --> CtrlAntes : POST /api/v1/prescriptions
+  CtrlAntes --> ActionAntes : execute(datos, medico)
+  ActionAntes --> PatientConcreteAntes : findForTenant(...)
+  ActionAntes --> MedicationConcreteAntes : findActiveForTenant(...)
+  ActionAntes --> AllergyConcreteAntes : validate(...)
+  ActionAntes --> PrescriptionConcreteAntes : createConfirmed(...)
+  PatientConcreteAntes --> DbAntes
+  MedicationConcreteAntes --> DbAntes
+  AllergyConcreteAntes --> DbAntes
+  PrescriptionConcreteAntes --> DbAntes
+
+  note bottom of ActionAntes
+    Problema DIP: el caso de uso de alto nivel
+    depende directamente de clases concretas
+    de persistencia y validacion.
+  end note
+}
+
+package "Despues: alto nivel depende de abstracciones" as AFTER {
+  actor "Medico" as MedicoDespues
+  component "PrescriptionController" as Controller
+  component "CreatePrescriptionAction" as Action
+  interface "PatientLookup" as PatientLookup
+  interface "MedicationLookup" as MedicationLookup
+  interface "AllergyValidator" as AllergyValidator
+  interface "PrescriptionWriter" as PrescriptionWriter
+  component "EloquentPatientRepository" as PatientRepo
+  component "EloquentMedicationRepository" as MedicationRepo
+  component "DefaultAllergyValidator" as AllergyService
+  component "EloquentPrescriptionRepository" as PrescriptionRepo
+  artifact "AllergyValidationResult" as ValidationResult
+  database "Base de Datos" as DbDespues
+
+  MedicoDespues --> Controller : POST /api/v1/prescriptions
+  Controller --> Action : execute(datos, medico)
+  Action --> PatientLookup : findForTenant(...)
+  Action --> MedicationLookup : findActiveForTenant(...)
+  Action --> AllergyValidator : validate(...)
+  Action --> PrescriptionWriter : createConfirmed(...)
+  PatientRepo ..|> PatientLookup
+  MedicationRepo ..|> MedicationLookup
+  AllergyService ..|> AllergyValidator
+  PrescriptionRepo ..|> PrescriptionWriter
+  AllergyValidator --> ValidationResult : blocked, mensaje, coincidencias
+  PatientRepo --> DbDespues : Consultar paciente
+  MedicationRepo --> DbDespues : Consultar medicamento
+  AllergyService --> DbDespues : Consultar alergias activas
+  PrescriptionRepo --> DbDespues : Guardar prescripcion
+
+  note bottom of Action
+    DIP: la politica de alto nivel depende
+    de contratos, no de detalles concretos
+    de Eloquent o validacion.
+  end note
+}
+
+note bottom
+  Fuente SOLID: https://mvpcluster.com/diseno-de-software-2/
+  Principio aplicado: Dependency Inversion Principle.
+end note
+
+@enduml
