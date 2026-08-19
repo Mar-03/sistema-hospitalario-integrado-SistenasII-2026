@@ -219,6 +219,8 @@ final class CreatePrescriptionAction
 |---|---|---|
 | RF/RNF y criterios | `ascii15/semana-02/README.md` | Requisitos y criterios verificables |
 | Diseno antes/despues editable | `ascii15/semana-02/diseno-antes-despues.puml` | Diagrama modificable en PlantUML |
+| Infraestructura de red y servidor | `ascii15/semana-02/infraestructura-red-servidor.md` | Propuesta tecnica para despliegue |
+| Infraestructura de red y servidor editable | `ascii15/semana-02/infraestructura-red-servidor.puml` | Diagrama de despliegue modificable |
 | Guia de defensa | `ascii15/semana-02/guia-defensa.md` | Preguntas y respuestas para defensa oral |
 | Evidencia de validacion | `ascii15/semana-02/evidencia-validacion.md` | Checklist y comandos sugeridos |
 | Evidencia Git | `ascii15/semana-02/evidencia-git.md` | Historial, remoto, rama, estado y nota de commit pendiente |

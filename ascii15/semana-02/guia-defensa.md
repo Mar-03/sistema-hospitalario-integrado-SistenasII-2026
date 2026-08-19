@@ -43,12 +43,18 @@ La decision mas relevante fue hacer que `CreatePrescriptionAction` dependa de co
 
 7. Que elemento podrias modificar en vivo?
 
-   Se podria agregar un nuevo contrato `AuditRecorder` y una implementacion `EloquentAuditRecorder` en el diagrama despues, manteniendo `CreatePrescriptionAction` dependiente de abstracciones.
+    Se podria agregar un nuevo contrato `AuditRecorder` y una implementacion `EloquentAuditRecorder` en el diagrama despues, manteniendo `CreatePrescriptionAction` dependiente de abstracciones.
+
+8. Como se justifica separar red de aplicacion y red de datos?
+
+    Porque la base de datos contiene informacion sensible y no debe quedar expuesta a la red publica. La aplicacion solo accede por red privada, lo que reduce superficie de ataque y facilita control por firewall.
 
 ## Archivos que debes mencionar
 
 - `ascii15/semana-02/README.md`
 - `ascii15/semana-02/diseno-antes-despues.puml`
+- `ascii15/semana-02/infraestructura-red-servidor.md`
+- `ascii15/semana-02/infraestructura-red-servidor.puml`
 - `ascii15/semana-02/evidencia-validacion.md`
 - `ascii15/semana-02/guia-defensa.md`
 - `DECLARACION_IA.md`

@@ -9,6 +9,8 @@ Verificar que la entrega de Semana 2 contiene RF/RNF, criterios de aceptacion, d
 ```text
 ascii15/semana-02/README.md
 ascii15/semana-02/diseno-antes-despues.puml
+ascii15/semana-02/infraestructura-red-servidor.md
+ascii15/semana-02/infraestructura-red-servidor.puml
 ascii15/semana-02/evidencia-git.md
 ascii15/semana-02/evidencia-validacion.md
 ascii15/semana-02/guia-defensa.md
@@ -25,6 +27,7 @@ DECLARACION_IA.md
 | Fuente obligatoria | Cita a `https://mvpcluster.com/diseno-de-software-2/` | Cumple |
 | No confundir etiqueta con justificacion | Se explica la razon arquitectonica y las razones de cambio | Cumple |
 | Diseno antes/despues | Tabla y PlantUML `diseno-antes-despues.puml` | Cumple |
+| Infraestructura de red y servidor | Documento y PlantUML nuevos | Cumple |
 | Fuentes editables | Markdown y PlantUML | Cumple |
 | Evidencia Git | `evidencia-git.md` con remoto, rama, historial y estado actual | Cumple parcial hasta generar commit |
 | Datos ficticios | `PAC-DEM-0001`, `TENANT-DEMO-01`, medicamentos de ejemplo | Cumple |

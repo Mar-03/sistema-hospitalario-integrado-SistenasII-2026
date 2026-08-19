@@ -1,0 +1,50 @@
+@startuml
+' ASII-15 - Semana 2
+' Infraestructura de red y servidores propuesta para el HIS.
+
+title ASII-15 - Infraestructura de red y servidores
+
+left to right direction
+skinparam shadowing false
+skinparam componentStyle rectangle
+
+cloud "Internet / Red institucional" as Internet
+
+node "DMZ / Red publica\n10.10.10.0/24" as DMZ {
+  node "Reverse Proxy / Firewall\nNginx + TLS" as Proxy
+}
+
+node "Red de Aplicacion\n10.10.20.0/24" as APPNET {
+  node "Servidor de aplicacion\nLaravel + Vue + PHP-FPM" as App
+  node "Redis\nCache / Queue" as Redis
+}
+
+node "Red de Datos\n10.10.30.0/24" as DATANET {
+  database "Base de datos\nMySQL o PostgreSQL" as DB
+  node "Repositorio de backups" as Backup
+}
+
+node "Red de Administracion\n10.10.40.0/24" as MGMT {
+  node "VPN / Bastion" as Bastion
+  node "Monitoreo y logs" as Monitor
+}
+
+Internet --> Proxy : HTTPS 443
+Proxy --> App : Trafico interno 8080/9000
+App --> DB : 3306/5432
+App --> Redis : 6379
+App --> Backup : dumps / snapshots
+Bastion --> Proxy : Admin
+Bastion --> App : Admin
+Bastion --> DB : Admin
+Monitor ..> App : metricas
+Monitor ..> DB : metricas
+Monitor ..> Proxy : metricas
+
+note bottom
+  Para una version minima, proxy y aplicacion pueden
+  convivir en una misma VM. La base de datos debe
+  mantenerse separada en red privada.
+end note
+
+@enduml
