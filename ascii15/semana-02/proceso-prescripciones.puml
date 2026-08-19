@@ -1,0 +1,62 @@
+@startuml
+title ASII-15 - Proceso de Prescripciones Electronicas con validacion de alergias
+
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam activity {
+  BackgroundColor #F8FAFC
+  BorderColor #64748B
+  FontColor #0F172A
+}
+skinparam note {
+  BackgroundColor #FEF3C7
+  BorderColor #F59E0B
+  FontColor #7C2D12
+}
+
+start
+
+partition "Seguridad" {
+  :Usuario medico autenticado;
+  :Validar JWT, tenant y rol/permisos;
+  if (¿Acceso permitido?) then (si)
+  else (no)
+    :Rechazar acceso;
+    stop
+  endif
+}
+
+partition "Atencion clinica" {
+  :Seleccionar paciente o atencion vigente;
+  :Abrir expediente medico y SOAP actual;
+  :Iniciar prescripcion desde la consulta;
+}
+
+partition "ASII-15 Prescripciones" {
+  :Seleccionar medicamento activo;
+  :Consultar alergias activas del paciente;
+  :Comparar medicamento contra alergias\n(nombre comercial y generico);
+  while (¿Existe alergia o contraindicacion?) is (si)
+    :Mostrar alerta preventiva;
+    if (¿Cancelar proceso?) then (si)
+      :Cancelar la prescripcion;
+      stop
+    endif
+    :Corregir medicamento o datos;
+    :Reconsultar alergias y comparar de nuevo;
+  endwhile (no)
+  :Validar dosis, frecuencia, via,\nduracion e indicaciones;
+  :Registrar prescripcion\n(asociar paciente, medico, SOAP note y medicamento);
+  :Marcar blocked = false y firmar electronicamente;
+}
+
+partition "Trazabilidad" {
+  :Registrar auditoria de la operacion;
+}
+
+partition "Atencion clinica" {
+  :Actualizar expediente y continuar atencion;
+}
+
+stop
+@enduml

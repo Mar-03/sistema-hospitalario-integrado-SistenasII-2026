@@ -1,0 +1,94 @@
+@startuml
+title Sistema Hospitalario Integrado - Proceso global con ASII-15 Prescripciones
+
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam activity {
+  BackgroundColor #F8FAFC
+  BorderColor #64748B
+  FontColor #0F172A
+}
+skinparam note {
+  BackgroundColor #E0F2FE
+  BorderColor #0284C7
+  FontColor #075985
+}
+
+start
+
+partition "Seguridad" {
+  :Usuario inicia sesion;
+  :Validar JWT, tenant y permisos;
+  if (¿Acceso permitido?) then (si)
+  else (no)
+    :Detener proceso;
+    stop
+  endif
+}
+
+partition "Gestion del paciente" {
+  :Buscar o identificar paciente del tenant;
+  if (¿Paciente encontrado?) then (si)
+  else (no)
+    :Ir al modulo de pacientes para registro o actualizacion;
+    :Retomar la identificacion del paciente;
+  endif
+  :Determinar si existe cita o admision activa;
+  if (¿Existe contexto de atencion?) then (si)
+  else (no)
+    :Crear o confirmar cita / admision;
+  endif
+}
+
+partition "Atencion clinica" {
+  :Realizar consulta medica;
+  :Abrir o actualizar expediente medico;
+  :Registrar nota SOAP y evaluacion clinica;
+}
+
+if (¿Requiere prescripcion?) then (si)
+  partition "ASII-15 Prescripciones" {
+    :Seleccionar medicamento activo;
+    :Consultar alergias activas del paciente;
+    :Comparar medicamento contra alergias;
+    if (¿Existe alergia o contraindicacion?) then (si)
+      :Mostrar alerta preventiva;
+      if (¿Cancelar prescripcion?) then (si)
+        :Registrar alerta y auditoria;
+        :Volver a la evaluacion clinica;
+      else (no)
+        :Corregir medicamento o datos;
+        :Revalidar alergias;
+        :Registrar prescripcion vinculada a paciente,\nmedico, SOAP note y medicamento;
+        :Actualizar expediente medico;
+        :Registrar auditoria;
+      endif
+    else (no)
+      :Registrar prescripcion vinculada a paciente,\nmedico, SOAP note y medicamento;
+      :Actualizar expediente medico;
+      :Registrar auditoria;
+    endif
+  }
+endif
+
+if (¿Requiere laboratorio?) then (si)
+  partition "Laboratorio" {
+    :Crear orden de laboratorio;
+    :Tomar o recibir muestra;
+    :Ingresar resultado;
+    :Validar resultado;
+    if (¿Resultado critico?) then (si)
+      :Generar notificacion interna;
+    endif
+    :Enviar resultado al expediente medico;
+    :Registrar auditoria;
+  }
+endif
+
+partition "Trazabilidad" {
+  :Mantener auditoria de accesos y cambios;
+  :Emitir notificaciones relevantes;
+}
+
+stop
+@enduml
