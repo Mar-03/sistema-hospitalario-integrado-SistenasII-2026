@@ -1,0 +1,11 @@
+@startuml
+package Presentation
+package Application
+package Domain
+package Persistence
+
+Presentation --> Application
+Application --> Domain
+Application --> Persistence
+Persistence --> Domain
+@enduml
