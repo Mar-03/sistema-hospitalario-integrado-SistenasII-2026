@@ -1,0 +1,12 @@
+@startuml
+actor Medico
+participant Controller
+participant UseCase
+participant AllergyRepo
+
+Medico -> Controller : POST /prescriptions
+Controller -> UseCase : execute()
+UseCase -> AllergyRepo : findActiveByPatientId()
+UseCase --> Controller : 409 Conflict
+Controller --> Medico : rechazo
+@enduml

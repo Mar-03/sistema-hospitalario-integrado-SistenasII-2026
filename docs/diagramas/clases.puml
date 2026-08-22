@@ -1,0 +1,21 @@
+@startuml
+class Prescription
+class Patient
+class Medication
+class Allergy
+class PrescriptionAuthorization
+class CreatePrescriptionUseCase
+interface PrescriptionRepositoryInterface
+interface PatientRepositoryInterface
+interface MedicationRepositoryInterface
+interface AllergyRepositoryInterface
+
+CreatePrescriptionUseCase --> PrescriptionRepositoryInterface
+CreatePrescriptionUseCase --> PatientRepositoryInterface
+CreatePrescriptionUseCase --> MedicationRepositoryInterface
+CreatePrescriptionUseCase --> AllergyRepositoryInterface
+Prescription "1" --> "0..1" PrescriptionAuthorization
+Prescription --> Patient
+Prescription --> Medication
+Prescription ..> Allergy
+@enduml

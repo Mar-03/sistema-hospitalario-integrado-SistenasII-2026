@@ -1,0 +1,22 @@
+@startuml
+left to right direction
+actor Medico
+actor "Usuario autorizado" as Usuario
+rectangle "Micro-HIS Mod15" {
+  usecase "Crear prescripcion" as UC1
+  usecase "Validar medicamento" as UC2
+  usecase "Validar dosis" as UC3
+  usecase "Validar via" as UC4
+  usecase "Validar frecuencia" as UC5
+  usecase "Consultar alergias activas" as UC6
+  usecase "Registrar excepcion" as UC7
+}
+Medico --> UC1
+Usuario --> UC7
+UC1 .> UC2 : <<include>>
+UC1 .> UC3 : <<include>>
+UC1 .> UC4 : <<include>>
+UC1 .> UC5 : <<include>>
+UC1 .> UC6 : <<include>>
+UC7 .> UC1 : <<extend>>
+@enduml
