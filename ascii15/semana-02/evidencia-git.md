@@ -5,24 +5,32 @@
 - Repositorio remoto: `https://github.com/Mar-03/sistema-hospitalario-integrado-SistenasII-2026.git`
 - Usuario GitHub: `Mar-03`
 - Rama de trabajo: `main`
-- Ultimo commit existente antes de Semana 2: `b620009 evidencia pdf`
-- Enlace al ultimo commit previo: `https://github.com/Mar-03/sistema-hospitalario-integrado-SistenasII-2026/commit/b620009`
-- Commits de Semana 2:
+- Estado Git: `Cumple`
+
+## Commits verificados de Semana 2
+
 - `5348bea docs(asii-15): definir requisitos semana 2`
 - `4a536a2 docs(asii-15): agregar diseno DIP semana 2`
 - `eabbb98 docs(asii-15): agregar evidencia y defensa semana 2`
 - `2b1ae4b docs(asii-15): actualizar declaracion IA semana 2`
+- `ac4164b docs(asii-15): registrar evidencia git semana 2`
+- `7143a1d docs(asii-15): agregar infraestructura red y servidor`
+- `896c144 docs(asii-15): agregar diagramas de procesos semana 2`
 
-## Estado observado antes del commit final de evidencia
+## Estado observado durante la semana 2
 
 ```text
-## main...origin/main [ahead 4]
-?? ascii15/semana-02/evidencia-git.md
+main
+origin/main
+origin/feat/mod15-prescripciones-vanilla
 ```
 
 ## Historial reciente observado
 
 ```text
+896c144 docs(asii-15): agregar diagramas de procesos semana 2
+7143a1d docs(asii-15): agregar infraestructura red y servidor
+ac4164b docs(asii-15): registrar evidencia git semana 2
 2b1ae4b docs(asii-15): actualizar declaracion IA semana 2
 eabbb98 docs(asii-15): agregar evidencia y defensa semana 2
 4a536a2 docs(asii-15): agregar diseno DIP semana 2
@@ -72,4 +80,4 @@ git ls-tree -r --name-only HEAD
 
 ## Nota
 
-La entrega de Semana 2 se separo en varios commits por proposito: requisitos, diseno DIP, evidencia/defensa, declaracion de IA y evidencia Git. El hash del commit final de este archivo se obtiene despues de confirmarlo.
+La entrega de Semana 2 se separo en varios commits por proposito: requisitos, diseno DIP, evidencia/defensa, declaracion de IA, evidencia Git e infraestructura documental. El cierre verificable de la evidencia Git queda en `ac4164b`.
