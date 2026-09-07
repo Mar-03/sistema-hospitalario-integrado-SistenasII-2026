@@ -29,7 +29,7 @@ DECLARACION_IA.md
 | Diseno antes/despues | Tabla y PlantUML `diseno-antes-despues.puml` | Cumple |
 | Infraestructura de red y servidor | Documento y PlantUML nuevos | Cumple |
 | Fuentes editables | Markdown y PlantUML | Cumple |
-| Evidencia Git | `evidencia-git.md` con remoto, rama, historial y estado actual | Cumple parcial hasta generar commit |
+| Evidencia Git | `evidencia-git.md` con remoto, rama, historial, estado actual y commits verificados | Cumple |
 | Datos ficticios | `PAC-DEM-0001`, `TENANT-DEMO-01`, medicamentos de ejemplo | Cumple |
 | Declaracion IA | `DECLARACION_IA.md` actualizado | Cumple |
 | Defensa oral | `guia-defensa.md` | Cumple |

@@ -8,8 +8,8 @@
 - GitHub: Mar-03
 - Repositorio: `https://github.com/Mar-03/sistema-hospitalario-integrado-SistenasII-2026.git`
 - Rama evaluada: `main`
-- Ultimo commit existente antes de confirmar Semana 2: `b620009 evidencia pdf`
-- Commit evaluado de Semana 2: pendiente hasta autorizacion de commit
+- Commit de cierre de la evidencia Git de Semana 2: `ac4164b`
+- Commit evaluado de Semana 2: `ac4164b docs(asii-15): registrar evidencia git semana 2`
 - Modulo: Prescripciones electronicas con validacion de alergias
 - Proceso: Creacion de prescripcion con verificacion previa de alergias
 - Semana: 2
@@ -223,7 +223,7 @@ final class CreatePrescriptionAction
 | Infraestructura de red y servidor editable | `ascii15/semana-02/infraestructura-red-servidor.puml` | Diagrama de despliegue modificable |
 | Guia de defensa | `ascii15/semana-02/guia-defensa.md` | Preguntas y respuestas para defensa oral |
 | Evidencia de validacion | `ascii15/semana-02/evidencia-validacion.md` | Checklist y comandos sugeridos |
-| Evidencia Git | `ascii15/semana-02/evidencia-git.md` | Historial, remoto, rama, estado y nota de commit pendiente |
+| Evidencia Git | `ascii15/semana-02/evidencia-git.md` | Historial, remoto, rama, estado y commits verificados | 
 | Declaracion IA | `DECLARACION_IA.md` | Uso transparente de IA actualizado |
 
 ## Conclusion
