@@ -89,6 +89,23 @@ final class Mod15PrescriptionTest extends TestCase
         $this->assertCount(1, $prescriptions->saved);
     }
 
+    public function testInvalidDoseIsRejected(): void
+    {
+        $prescriptions = new InMemoryPrescriptionRepository();
+        $useCase = $this->useCase(
+            new InMemoryPatientRepository(['pat-1' => new Patient('pat-1', 'Paciente Seguro')]),
+            new InMemoryMedicationRepository(['med-1' => new Medication('med-1', 'Paracetamol', 'paracetamol')]),
+            new InMemoryAllergyRepository(['pat-1' => []]),
+            $prescriptions
+        );
+
+        $result = $useCase->execute($this->input(['dose' => 'abc']));
+
+        $this->assertFalse($result->success, 'Expected failure');
+        $this->assertEquals(422, $result->statusCode);
+        $this->assertCount(0, $prescriptions->saved);
+    }
+
     private function input(array $overrides = []): CreatePrescriptionInput
     {
         return CreatePrescriptionInput::fromArray(array_replace([
