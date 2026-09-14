@@ -1,0 +1,88 @@
+@startuml
+skinparam componentStyle rectangle
+skinparam packageStyle rectangle
+title Micro-HIS ASII-15 - Prescripciones electronicas con validacion de alergias\n(Semana 3 - Vista arquitectonica C4/UML)
+
+actor "Medico / Usuario" as Medico
+
+package "Presentation" {
+    component "Router" as Router
+    component "PrescriptionController" as Controller
+    component "CreatePrescriptionRequest" as Request
+}
+
+package "Application" {
+    component "CreatePrescriptionUseCase" as UseCase
+    component "CreatePrescriptionInput" as Input
+    component "CreatePrescriptionResult" as Result
+}
+
+package "Domain" {
+    component "Entities" as Entities
+    component "Value Objects" as ValueObjects
+    component "Repository Interfaces" as Contracts
+    component "AllergyConflictDetector" as Detector
+}
+
+package "Persistence" {
+    component "PdoPatientRepository" as PdoPatient
+    component "PdoMedicationRepository" as PdoMedication
+    component "PdoAllergyRepository" as PdoAllergy
+    component "PdoPrescriptionRepository" as PdoPrescription
+}
+
+database "PDO\n(SQLite / PostgreSQL)" as PdoConn
+
+Medico --> Router : POST /prescriptions
+Router --> Controller : HTTP request
+Controller ..> Request : valida payload
+Controller --> UseCase
+UseCase --> Input : CreatePrescriptionInput
+UseCase ..> Result : CreatePrescriptionResult
+UseCase --> Entities : entidades
+UseCase --> ValueObjects : Dose / Frequency / AdministrationRoute
+UseCase --> Detector : detect(medication, activeAllergies)
+UseCase --> Contracts : depende de contratos
+UseCase --> PdoPatient : repositorios inyectados
+UseCase --> PdoMedication : repositorios inyectados
+UseCase --> PdoAllergy : repositorios inyectados
+UseCase --> PdoPrescription : repositorios inyectados
+PdoPatient ..> Contracts : implementa
+PdoMedication ..> Contracts : implementa
+PdoAllergy ..> Contracts : implementa
+PdoPrescription ..> Contracts : implementa
+PdoPatient --> PdoConn : PDO
+PdoMedication --> PdoConn : PDO
+PdoAllergy --> PdoConn : PDO
+PdoPrescription --> PdoConn : PDO
+PdoConn --> PdoPatient : resultados
+PdoConn --> PdoMedication : resultados
+PdoConn --> PdoAllergy : resultados
+PdoConn --> PdoPrescription : resultados
+
+note bottom of PdoConn
+  Sentencias preparadas:
+  PDO::prepare() + $stmt->execute()
+end note
+
+note bottom of Detector
+  Regla de dominio: alergia critica bloquea (409).
+  Excepcion autorizada permite continuar (201).
+end note
+
+package "Dependencias del modulo" {
+    component "Paciente" as DPaciente
+    component "Medicamento" as DMedicamento
+    component "Alergia" as DAlergia
+    component "Prescripcion" as DPrescripcion
+}
+
+Entities --> DPaciente
+Entities --> DMedicamento
+Entities --> DAlergia
+Entities --> DPrescripcion
+PdoPatient --> DPaciente
+PdoMedication --> DMedicamento
+PdoAllergy --> DAlergia
+PdoPrescription --> DPrescripcion
+@enduml
