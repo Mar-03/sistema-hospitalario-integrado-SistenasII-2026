@@ -6,7 +6,7 @@
 - GitHub: Mar-03
 - Modulo: Prescripciones electronicas con validacion de alergias
 - Proceso modelado: Creacion de prescripcion con verificacion previa de alergias
-- Semanas cubiertas: 1 y 2
+- Semanas cubiertas: 1, 2 y 3
 
 ## Herramientas utilizadas
 
@@ -25,6 +25,10 @@ Las herramientas de inteligencia artificial se utilizaron como apoyo para:
 - Definir RF/RNF y criterios de aceptacion para Semana 2.
 - Proponer una mejora de diseno aplicando DIP al modulo.
 - Revisar la fuente obligatoria SOLID indicada por la consigna.
+- Revisar la arquitectura del Micro-HIS y confirmar el cumplimiento de la consigna de Semana 3.
+- Apoyar la organizacion de la evidencia semanal (README, evidencia Git y diagrama C4/UML).
+- Revisar las pruebas y agregar la cobertura de dosis invalida.
+- Documentar el requisito PHP 8.2+ y la direccion de dependencias (DIP).
 
 
 ## Prompts relevantes
@@ -35,11 +39,14 @@ Las herramientas de inteligencia artificial se utilizaron como apoyo para:
 - "Construye la Semana 2 con RF/RNF, criterios de aceptacion y diseno inicial para prescripciones electronicas con validacion de alergias".
 - "Aplica al menos un principio SOLID de la fuente https://mvpcluster.com/diseno-de-software-2/ sin confundir DRY, KISS o YAGNI con SOLID".
 - "Genera un diseno antes/despues que justifique arquitectonicamente la separacion de responsabilidades".
+- "Revisa el cumplimiento de la consigna de Semana 3 en el Micro-HIS (capas, PDO, prepared statements, regla de alergias, camino feliz y error de persistencia)".
+- "Agrega la cobertura de dosis invalida sin modificar los Value Objects".
+- "Organiza la evidencia de Semana 3 y el diagrama C4/UML en ascii15/semana-03".
 
 
 ## Partes aceptadas o modificadas
 
-Las propuestas generadas por IA fueron revisadas manualmente antes de aceptarse. Se modificaron nombres, actores, casos de uso, flujos alternativos, mensajes, estructura de los diagramas, RF/RNF, criterios de aceptacion y justificacion SOLID para mantener coherencia con la asignacion individual y con el repositorio.
+Las propuestas generadas por IA fueron revisadas manualmente antes de aceptarse. Se modificaron nombres, actores, casos de uso, flujos alternativos, mensajes, estructura de los diagramas, RF/RNF, criterios de aceptacion, justificacion SOLID y la organizacion de la evidencia y del diagrama C4/UML de Semana 3 para mantener coherencia con la asignacion individual y con el repositorio.
 
 ## Validacion humana
 
@@ -59,6 +66,10 @@ La estudiante verifico manualmente:
 - La aplicacion de DIP como principio SOLID principal.
 - La cita de la fuente obligatoria `https://mvpcluster.com/diseno-de-software-2/`.
 - Que no se atribuyeran DRY, KISS ni YAGNI al articulo indicado.
+- El cumplimiento de la consigna de Semana 3 sobre el Micro-HIS heredado y ya mergeado.
+- La ubicacion real de `DECLARACION_IA.md` en la raiz del repositorio, sin crear duplicados.
+- El resultado real de las pruebas y del lint PHP.
+- Que todos los cambios de Semana 3 quedaron exclusivamente en la rama `feature/week-03-arquitectura-asii15-mar-03`.
 
 ## Responsabilidad de autoria
 
