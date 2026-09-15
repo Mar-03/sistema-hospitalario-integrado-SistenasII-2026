@@ -1,0 +1,92 @@
+@startuml arquitectura-capas
+!theme plain
+title Arquitectura en capas - Micro-HIS Prescripciones (ASII-15)
+left to right direction
+
+skinparam componentStyle rectangle
+skinparam shadowing false
+skinparam rectangle {
+  BackgroundColor<<presentation>> #eaf2fb
+  BackgroundColor<<application>> #e2f0dd
+  BackgroundColor<<domain>> #fdf3d8
+  BackgroundColor<<persistence>> #f3e7f7
+  BorderColor<<presentation>> #3a6ea5
+  BorderColor<<application>> #4c8450
+  BorderColor<<domain>> #b08a2e
+  BorderColor<<persistence>> #7a4c9a
+}
+skinparam note {
+  BackgroundColor #ffffff
+}
+
+package "Presentation" <<presentation>> {
+  component "Router\nroutes/api.php" as ROUTER
+  component "PrescriptionController" as CTRL
+  component "CreatePrescriptionRequest" as REQ
+}
+
+package "Application" <<application>> {
+  component "CreatePrescriptionUseCase" as UC
+  component "CreatePrescriptionInput" as INPUT
+  component "CreatePrescriptionResult" as RESULT
+}
+
+package "Domain" <<domain>> {
+  component "AllergyConflictDetector" as DETECTOR
+  component "Entities + Value Objects" as ENTITIES
+  component "RepositoryContracts" as CONTRACTS
+  component "DomainExceptions" as EX
+}
+
+package "Persistence" <<persistence>> {
+  component "PdoPrescriptionRepository" as PDOPRES
+  component "PdoPatientRepository" as PDOPAT
+  component "PdoMedicationRepository" as PDOMED
+  component "PdoAllergyRepository" as PDOALL
+  component "ConnectionFactory\n(PDO / SQLite)" as CONN
+  component "MigrationRunner + Seeders" as MIGR
+}
+
+database "DB\n(patients, medications,\nalergies, prescriptions,\nprescription_audits)" as DATABASE
+
+HTTP_USER --> ROUTER
+ROUTER --> CTRL
+CTRL --> REQ
+REQ --> CTRL
+CTRL --> UC
+UC --> INPUT
+UC --> RESULT
+UC --> DETECTOR
+UC --> ENTITIES
+UC --> CONTRACTS
+DETECTOR --> ENTITIES
+ENTITIES --> EX
+PDOPRES --> CONTRACTS
+PDOPAT --> CONTRACTS
+PDOMED --> CONTRACTS
+PDOALL --> CONTRACTS
+CONTRACTS --> PDOPRES
+CONTRACTS --> PDOPAT
+CONTRACTS --> PDOMED
+CONTRACTS --> PDOALL
+PDOPRES --> CONN
+PDOPAT --> CONN
+PDOMED --> CONN
+PDOALL --> CONN
+MIGR --> CONN
+CONN --> DATABASE
+
+note right of CTRL
+  Sin SQL, sin PDO,
+  sin reglas clínicas.
+  Valida la Request y
+  delega en el caso de uso.
+end note
+
+note right of CONTRACTS
+  Puertos definidos en Domain.
+  Implementados por adaptadores
+  PDO (Persistence) e
+  InMemory (tests/Fakes).
+end note
+@enduml

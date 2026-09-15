@@ -1,0 +1,60 @@
+@startuml repositorio-datos-compartido
+!theme plain
+title Repositorio de datos compartido - Integración de ASII-15 con el HIS
+left to right direction
+
+skinparam componentStyle rectangle
+skinparam shadowing false
+skinparam note {
+  BackgroundColor #ffffff
+}
+
+package "Sistema Hospitalario Integrado (HIS)" {
+  component "Modulo de Pacientes\n(OWNER pacientes)" as PATIENT
+  component "Modulo de Alergias\n(OWNER alergias)" as ALLERGY
+  component "Catalogo de Medicamentos\n(OWNER medicamentos)" as MED
+  component "Sistema de Auditoria\n(gestor de eventos)" as AUDIT
+}
+
+package "Micro-HIS ASII-15 (Prescripciones)" {
+  component "Repository Contracts\n(src/Domain/Contracts)\n= Puerto / Port" as PORTS
+  component "Adapters PDO\n(src/Persistence/Repositories)" as ADAPTERS
+  component "CreatePrescriptionUseCase\n(src/Application)" as UC
+  component "AllergyConflictDetector\n(src/Domain)" as DETECTOR
+  component "Prescripciones\n(OWNER asii-15)" as PSC
+}
+
+PATIENT --> PORTS : "lee (read)"
+ALLERGY --> PORTS : "lee (read)"
+MED --> PORTS : "lee (read)"
+PORTS --> PATIENT : "consulta"
+PORTS --> ALLERGY : "consulta"
+PORTS --> MED : "consulta"
+
+UC --> PORTS : "depende de puertos"
+PORTS --> ADAPTERS : "implementa"
+ADAPTERS <-- UC : "inyecta adaptador"
+
+DETECTOR --> ALLERGY : "regla de alergia activa"
+PSC --> PATIENT : "referencia patient_id"
+PSC --> MED : "referencia medication_id"
+PSC --> AUDIT : "genera evento de auditoria"
+UC --> PSC : "valido + persisto"
+AUDIT --> PSC : "registro (authorized_exception)"
+
+note bottom of PATIENT
+  ASII-15: solo lectura / no owner
+end note
+note bottom of ALLERGY
+  Bloquea (409) o autoriza excepcion
+  en el flujo de prescripcion
+end note
+note bottom of MED
+  Catalogo activo; comparacion por
+  sustancia/genérico en la regla
+end note
+note bottom of AUDIT
+  Trazabilidad del flujo
+  (excepcion autorizada, motivo, responsable)
+end note
+@enduml
