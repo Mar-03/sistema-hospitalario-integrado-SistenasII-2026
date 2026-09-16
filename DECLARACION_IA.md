@@ -6,7 +6,7 @@
 - GitHub: Mar-03
 - Modulo: Prescripciones electronicas con validacion de alergias
 - Proceso modelado: Creacion de prescripcion con verificacion previa de alergias
-- Semanas cubiertas: 1, 2, 3, 4, 5 y 6
+- Semanas cubiertas: 1, 2, 3, 4, 5, 6 y 7
 
 ## Herramientas utilizadas
 
@@ -42,6 +42,10 @@ Las herramientas de inteligencia artificial se utilizaron como apoyo para:
 - Organizar la evidencia documental de Semana 6 sin agregar funcionalidad nueva, endpoints, UI, reglas clinicas ni refactorizaciones.
 - Validar la consistencia entre Semanas 1-5, el merge de Semana 5 en `developer`, la estructura del backend y la trazabilidad Git.
 - Registrar el bloqueo real de validacion tecnica cuando PHP no estuvo disponible en el entorno de ejecucion actual.
+- Analizar los componentes internos reales de ASII-15 para Semana 7 sin inventar clases ni endpoints.
+- Revisar responsabilidades entre entrada HTTP, Presentation, Application, Domain, contratos Repository, adaptadores de persistencia, auditoria y tests.
+- Identificar oportunidades de refactorizacion y seleccionar una mejora arquitectonica pequena: separar la emision JSON del Router.
+- Apoyar la documentacion y el diagrama de componentes internos, dejando claro que la implementacion queda pendiente para Fase 2B.
 
 
 ## Prompts relevantes
@@ -69,11 +73,14 @@ Las herramientas de inteligencia artificial se utilizaron como apoyo para:
 - "Construye Semana 6 como checkpoint del Primer Parcial sin funcionalidad nueva, verificando developer, evidencia acumulada y trazabilidad Git".
 - "Documenta el estado real del backend ASII-15, sus pruebas esperadas y las limitaciones actuales sin inventar resultados".
 - "Prepara un diagnostico de lectura para Semana 7 sobre componentes internos y oportunidades reales de refactorizacion".
+- "Documenta Semana 7 Fase 2A con componentes reales, responsabilidades y refactor propuesto sin modificar codigo".
+- "Disena la separacion futura de JsonResponseEmitter desde Router preservando contrato HTTP y formato JSON".
+- "Genera un diagrama PlantUML de componentes internos diferente al diagrama cliente-servidor de Semana 5".
 
 
 ## Partes aceptadas o modificadas
 
-Las propuestas generadas por IA fueron revisadas manualmente antes de aceptarse. Se modificaron nombres, actores, casos de uso, flujos alternativos, mensajes, estructura de los diagramas, RF/RNF, criterios de aceptacion, justificacion SOLID y la organizacion de la evidencia y del diagrama C4/UML de Semana 3 para mantener coherencia con la asignacion individual y con el repositorio. En Semana 4 se ajusto la redaccion de capas, responsabilidades, inventario de objetos reutilizables, analisis del repositorio de datos compartido, diagramas PlantUML y evidencia Git para reflejar exactamente el codigo real del Micro-HIS. En Semana 5 se reviso que el contrato REST, los payloads, las validaciones, los codigos HTTP, los permisos, el analisis de monolito vs microservicio y la evidencia (HTTP, persistencia y auditoria) coincidan exactamente con el codigo y con la ejecucion real, sin presentar diseno futuro como implementado. En Semana 6 se acepto solo apoyo documental para revisar el estado acumulado, organizar evidencia del Primer Parcial, validar consistencia y registrar trazabilidad; no se atribuye a la IA implementacion de funcionalidad nueva.
+Las propuestas generadas por IA fueron revisadas manualmente antes de aceptarse. Se modificaron nombres, actores, casos de uso, flujos alternativos, mensajes, estructura de los diagramas, RF/RNF, criterios de aceptacion, justificacion SOLID y la organizacion de la evidencia y del diagrama C4/UML de Semana 3 para mantener coherencia con la asignacion individual y con el repositorio. En Semana 4 se ajusto la redaccion de capas, responsabilidades, inventario de objetos reutilizables, analisis del repositorio de datos compartido, diagramas PlantUML y evidencia Git para reflejar exactamente el codigo real del Micro-HIS. En Semana 5 se reviso que el contrato REST, los payloads, las validaciones, los codigos HTTP, los permisos, el analisis de monolito vs microservicio y la evidencia (HTTP, persistencia y auditoria) coincidan exactamente con el codigo y con la ejecucion real, sin presentar diseno futuro como implementado. En Semana 6 se acepto solo apoyo documental para revisar el estado acumulado, organizar evidencia del Primer Parcial, validar consistencia y registrar trazabilidad; no se atribuye a la IA implementacion de funcionalidad nueva. En Semana 7 Fase 2A se acepto apoyo para analizar componentes, comparar responsabilidades, seleccionar un refactor propuesto y preparar documentacion/diagrama; todavia no se atribuye implementacion de codigo.
 
 ## Validacion humana
 
@@ -113,6 +120,10 @@ La estudiante verifico manualmente:
 - Que Semana 6 no modifica codigo funcional, reglas clinicas, endpoints, arquitectura ni UI.
 - Que la evidencia del Primer Parcial distingue resultados ejecutados previamente de validaciones pendientes por ausencia de PHP en el entorno actual.
 - Que Semana 7 queda solo diagnosticada en modo lectura y no se crea rama, worktree ni archivos de esa semana.
+- Que Semana 7 parte del `origin/developer` actualizado que contiene el merge de Semana 6.
+- Que la Fase 2A de Semana 7 documenta componentes y diseno de refactor sin modificar backend.
+- Que el refactor seleccionado es separar la emision JSON del Router mediante un componente propuesto `JsonResponseEmitter` pendiente de Fase 2B.
+- Que no se afirma ejecucion nueva de pruebas mientras PHP no este disponible.
 
 ## Responsabilidad de autoria
 
