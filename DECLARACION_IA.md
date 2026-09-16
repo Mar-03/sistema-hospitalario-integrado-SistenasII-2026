@@ -6,7 +6,7 @@
 - GitHub: Mar-03
 - Modulo: Prescripciones electronicas con validacion de alergias
 - Proceso modelado: Creacion de prescripcion con verificacion previa de alergias
-- Semanas cubiertas: 1, 2, 3, 4 y 5
+- Semanas cubiertas: 1, 2, 3, 4, 5 y 6
 
 ## Herramientas utilizadas
 
@@ -38,6 +38,10 @@ Las herramientas de inteligencia artificial se utilizaron como apoyo para:
 - Documentar la Semana 5 (modelo cliente-servidor, contrato REST, integración con el HIS, permisos y monolito vs microservicio) distinguiendo estado implementado de diseño futuro.
 - Elaborar la evidencia HTTP y de persistencia/auditoría con resultados reales (prescriptions = 2, prescription_audits = 1, acción authorized_exception).
 - Generar el diagrama PlantUML de integración cliente-servidor (implementado + futura integración con el HIS) y la evidencia Git de Semana 5.
+- Revisar el estado acumulado del modulo ASII-15 para el checkpoint del Primer Parcial de Semana 6.
+- Organizar la evidencia documental de Semana 6 sin agregar funcionalidad nueva, endpoints, UI, reglas clinicas ni refactorizaciones.
+- Validar la consistencia entre Semanas 1-5, el merge de Semana 5 en `developer`, la estructura del backend y la trazabilidad Git.
+- Registrar el bloqueo real de validacion tecnica cuando PHP no estuvo disponible en el entorno de ejecucion actual.
 
 
 ## Prompts relevantes
@@ -62,11 +66,14 @@ Las herramientas de inteligencia artificial se utilizaron como apoyo para:
 - "Elabora el análisis de monolito vs microservicio y los permisos de la Semana 5 a partir del código real".
 - "Ejecuta y registra la evidencia HTTP y de persistencia/auditoría reales de Semana 5".
 - "Genera el diagrama PlantUML de integración cliente-servidor (implementado + futuro) para ascii15/semana-05".
+- "Construye Semana 6 como checkpoint del Primer Parcial sin funcionalidad nueva, verificando developer, evidencia acumulada y trazabilidad Git".
+- "Documenta el estado real del backend ASII-15, sus pruebas esperadas y las limitaciones actuales sin inventar resultados".
+- "Prepara un diagnostico de lectura para Semana 7 sobre componentes internos y oportunidades reales de refactorizacion".
 
 
 ## Partes aceptadas o modificadas
 
-Las propuestas generadas por IA fueron revisadas manualmente antes de aceptarse. Se modificaron nombres, actores, casos de uso, flujos alternativos, mensajes, estructura de los diagramas, RF/RNF, criterios de aceptacion, justificacion SOLID y la organizacion de la evidencia y del diagrama C4/UML de Semana 3 para mantener coherencia con la asignacion individual y con el repositorio. En Semana 4 se ajusto la redaccion de capas, responsabilidades, inventario de objetos reutilizables, analisis del repositorio de datos compartido, diagramas PlantUML y evidencia Git para reflejar exactamente el codigo real del Micro-HIS. En Semana 5 se reviso que el contrato REST, los payloads, las validaciones, los codigos HTTP, los permisos, el analisis de monolito vs microservicio y la evidencia (HTTP, persistencia y auditoria) coincidan exactamente con el codigo y con la ejecucion real, sin presentar diseno futuro como implementado.
+Las propuestas generadas por IA fueron revisadas manualmente antes de aceptarse. Se modificaron nombres, actores, casos de uso, flujos alternativos, mensajes, estructura de los diagramas, RF/RNF, criterios de aceptacion, justificacion SOLID y la organizacion de la evidencia y del diagrama C4/UML de Semana 3 para mantener coherencia con la asignacion individual y con el repositorio. En Semana 4 se ajusto la redaccion de capas, responsabilidades, inventario de objetos reutilizables, analisis del repositorio de datos compartido, diagramas PlantUML y evidencia Git para reflejar exactamente el codigo real del Micro-HIS. En Semana 5 se reviso que el contrato REST, los payloads, las validaciones, los codigos HTTP, los permisos, el analisis de monolito vs microservicio y la evidencia (HTTP, persistencia y auditoria) coincidan exactamente con el codigo y con la ejecucion real, sin presentar diseno futuro como implementado. En Semana 6 se acepto solo apoyo documental para revisar el estado acumulado, organizar evidencia del Primer Parcial, validar consistencia y registrar trazabilidad; no se atribuye a la IA implementacion de funcionalidad nueva.
 
 ## Validacion humana
 
@@ -102,6 +109,10 @@ La estudiante verifico manualmente:
 - Que la integracion con el HIS y el microservicio se presentan como propuesta de diseno, no como implementacion.
 - Que los IDs de prescripcion observados se registran como ejemplos de la corrida (no como parte fija del contrato).
 - Que el diagrama PlantUML de integracion cliente-servidor fue renderizado a PNG sin errores y distingue flujo implementado de integracion futura.
+- Que Semana 6 parte del `origin/developer` actualizado que contiene el merge de Semana 5.
+- Que Semana 6 no modifica codigo funcional, reglas clinicas, endpoints, arquitectura ni UI.
+- Que la evidencia del Primer Parcial distingue resultados ejecutados previamente de validaciones pendientes por ausencia de PHP en el entorno actual.
+- Que Semana 7 queda solo diagnosticada en modo lectura y no se crea rama, worktree ni archivos de esa semana.
 
 ## Responsabilidad de autoria
 
