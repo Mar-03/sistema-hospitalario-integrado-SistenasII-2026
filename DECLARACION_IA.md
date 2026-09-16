@@ -6,7 +6,7 @@
 - GitHub: Mar-03
 - Modulo: Prescripciones electronicas con validacion de alergias
 - Proceso modelado: Creacion de prescripcion con verificacion previa de alergias
-- Semanas cubiertas: 1, 2, 3 y 4
+- Semanas cubiertas: 1, 2, 3, 4 y 5
 
 ## Herramientas utilizadas
 
@@ -33,6 +33,11 @@ Las herramientas de inteligencia artificial se utilizaron como apoyo para:
 - Analizar como un repositorio de datos compartido del HIS integraria este modulo (owners, lectura/escritura, IDs, tenant, consistencia, transacciones, seguridad y DIP).
 - Inventariar los objetos reales reutilizables del Micro-HIS sin inventar clases.
 - Redactar la evidencia de capas, responsabilidades, diagramas (arquitectura-capas y repositorio-datos-compartido) y la evidencia Git de Semana 4.
+- Auditar el backend personal real (rutas, Router, Controller, Request, DTO, UseCase, Domain, contratos, adaptadores PDO/InMemory, migraciones, seeds y tests) antes de la Semana 5.
+- Confirmar el contrato HTTP real (200, 201, 403, 404, 409, 422, 500) y el payload de POST /prescriptions contra el código personal.
+- Documentar la Semana 5 (modelo cliente-servidor, contrato REST, integración con el HIS, permisos y monolito vs microservicio) distinguiendo estado implementado de diseño futuro.
+- Elaborar la evidencia HTTP y de persistencia/auditoría con resultados reales (prescriptions = 2, prescription_audits = 1, acción authorized_exception).
+- Generar el diagrama PlantUML de integración cliente-servidor (implementado + futura integración con el HIS) y la evidencia Git de Semana 5.
 
 
 ## Prompts relevantes
@@ -52,11 +57,16 @@ Las herramientas de inteligencia artificial se utilizaron como apoyo para:
 - "Inventaria los objetos reutilizables reales del Micro-HIS para ascii15/semana-04".
 - "Genera los diagramas arquitectura-capas y repositorio-datos-compartido (PlantUML + PNG) para ascii15/semana-04".
 - "Actualiza DECLARACION_IA.md con las actividades reales de Semana 4 y valida pruebas, lint y git".
+- "Audita el backend personal real de ASII-15 (rutas, payload, validaciones y códigos HTTP) sin modificar código".
+- "Documenta el contrato REST real y la integración cliente-servidor de Semana 5 distinguiendo implementado de futuro".
+- "Elabora el análisis de monolito vs microservicio y los permisos de la Semana 5 a partir del código real".
+- "Ejecuta y registra la evidencia HTTP y de persistencia/auditoría reales de Semana 5".
+- "Genera el diagrama PlantUML de integración cliente-servidor (implementado + futuro) para ascii15/semana-05".
 
 
 ## Partes aceptadas o modificadas
 
-Las propuestas generadas por IA fueron revisadas manualmente antes de aceptarse. Se modificaron nombres, actores, casos de uso, flujos alternativos, mensajes, estructura de los diagramas, RF/RNF, criterios de aceptacion, justificacion SOLID y la organizacion de la evidencia y del diagrama C4/UML de Semana 3 para mantener coherencia con la asignacion individual y con el repositorio. En Semana 4 se ajusto la redaccion de capas, responsabilidades, inventario de objetos reutilizables, analisis del repositorio de datos compartido, diagramas PlantUML y evidencia Git para reflejar exactamente el codigo real del Micro-HIS.
+Las propuestas generadas por IA fueron revisadas manualmente antes de aceptarse. Se modificaron nombres, actores, casos de uso, flujos alternativos, mensajes, estructura de los diagramas, RF/RNF, criterios de aceptacion, justificacion SOLID y la organizacion de la evidencia y del diagrama C4/UML de Semana 3 para mantener coherencia con la asignacion individual y con el repositorio. En Semana 4 se ajusto la redaccion de capas, responsabilidades, inventario de objetos reutilizables, analisis del repositorio de datos compartido, diagramas PlantUML y evidencia Git para reflejar exactamente el codigo real del Micro-HIS. En Semana 5 se reviso que el contrato REST, los payloads, las validaciones, los codigos HTTP, los permisos, el analisis de monolito vs microservicio y la evidencia (HTTP, persistencia y auditoria) coincidan exactamente con el codigo y con la ejecucion real, sin presentar diseno futuro como implementado.
 
 ## Validacion humana
 
@@ -86,6 +96,12 @@ La estudiante verifico manualmente:
 - Que el inventario de objetos reutilizables usa solo clases reales existentes en `src/` y `tests/Fakes`.
 - Que el analisis del repositorio de datos compartido distingue estado ACTUAL (Micro-HIS con BD propia) de la PROPUESTA de integracion al HIS.
 - Que los diagramas PlantUML de Semana 4 fueron renderizados a PNG y coinciden con la estructura real del proyecto.
+- Que el backend de Semana 5 no se modifico: la evidencia se obtuvo ejecutando el codigo existente.
+- Que el contrato REST documentado (200, 201, 403, 404, 409, 422, 500) coincide con las pruebas HTTP reales y no inventa endpoints ni codigos.
+- Que los permisos (sin JWT, RBAC ni tenancy) se declaran como estado actual y que el acceso de medico, excepcion y auditoria se marca como diseno futuro.
+- Que la integracion con el HIS y el microservicio se presentan como propuesta de diseno, no como implementacion.
+- Que los IDs de prescripcion observados se registran como ejemplos de la corrida (no como parte fija del contrato).
+- Que el diagrama PlantUML de integracion cliente-servidor fue renderizado a PNG sin errores y distingue flujo implementado de integracion futura.
 
 ## Responsabilidad de autoria
 

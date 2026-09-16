@@ -26,7 +26,10 @@ $controller = new PrescriptionController(
 );
 
 $router->get('/health', static function (): array {
-    return ['status' => 'ok', 'module' => 'mod15-prescriptions'];
+    return [
+        'health' => 'ok',
+        'module' => 'mod15-prescriptions',
+    ];
 });
 
 $router->post('/prescriptions', static function (array $payload) use ($controller): array {

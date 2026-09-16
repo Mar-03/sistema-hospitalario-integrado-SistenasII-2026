@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'POST /health' => 'health',
+    'GET /health' => 'health',
     'POST /prescriptions' => 'prescriptions.create',
 ];

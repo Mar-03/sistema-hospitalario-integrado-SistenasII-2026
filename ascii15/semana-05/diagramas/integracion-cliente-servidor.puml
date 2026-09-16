@@ -1,0 +1,105 @@
+@startuml integracion-cliente-servidor
+!theme plain
+title Integración cliente-servidor - Micro-HIS Prescripciones (ASII-15)
+left to right direction
+
+skinparam componentStyle rectangle
+skinparam shadowing false
+skinparam rectangle {
+  BackgroundColor<<client>> #fbe4e4
+  BackgroundColor<<implementado>> #eaf2fb
+  BackgroundColor<<domain>> #fdf3d8
+  BackgroundColor<<persistence>> #f3e7f7
+  BackgroundColor<<futuro>> #f1f1f1
+  BorderColor<<client>> #b03a3a
+  BorderColor<<implementado>> #3a6ea5
+  BorderColor<<domain>> #b08a2e
+  BorderColor<<persistence>> #7a4c9a
+  BorderColor<<futuro>> #9a9a9a
+}
+skinparam database {
+  BackgroundColor<<implementado>> #eaf2fb
+  BackgroundColor<<futuro>> #f1f1f1
+  BorderColor<<implementado>> #3a6ea5
+  BorderColor<<futuro>> #9a9a9a
+}
+skinparam note {
+  BackgroundColor #ffffff
+}
+
+actor "Médico (HIS)" as MEDICO <<client>>
+component "Cliente HTTP\n(curl / navegador)" as CLIENTE <<client>>
+
+component "public/index.php\n(front controller / API JSON)" as FRONT <<implementado>>
+component "Router\nGET /health · POST /prescriptions" as ROUTER <<implementado>>
+component "PrescriptionController" as CTRL <<implementado>>
+component "CreatePrescriptionRequest\n(validación de payload)" as REQ <<implementado>>
+component "CreatePrescriptionUseCase" as UC <<implementado>>
+component "Domain\nEntities · Value Objects\nAllergyConflictDetector" as DOMAIN <<domain>>
+component "Repository Contracts\n*RepositoryInterface" as CONTRACTS <<domain>>
+component "PdoPatientRepository" as PDOPAT <<persistence>>
+component "PdoMedicationRepository" as PDOMED <<persistence>>
+component "PdoAllergyRepository" as PDOALL <<persistence>>
+component "PdoPrescriptionRepository\n(transacción + auditoría)" as PDOPRES <<persistence>>
+database "SQLite\ndatabase/prescripciones.sqlite" as SQLITE <<implementado>>
+
+MEDICO --> CLIENTE
+CLIENTE --> FRONT : "HTTP JSON"
+FRONT --> ROUTER
+ROUTER --> CTRL
+CTRL --> REQ
+REQ --> CTRL
+CTRL --> UC
+UC --> DOMAIN
+UC --> CONTRACTS
+DOMAIN --> CONTRACTS
+PDOPAT --> CONTRACTS
+PDOMED --> CONTRACTS
+PDOALL --> CONTRACTS
+PDOPRES --> CONTRACTS
+CONTRACTS --> PDOPAT
+CONTRACTS --> PDOMED
+CONTRACTS --> PDOALL
+CONTRACTS --> PDOPRES
+PDOPAT --> SQLITE
+PDOMED --> SQLITE
+PDOALL --> SQLITE
+PDOPRES --> SQLITE
+
+package "HIS compartido - INTEGRACIÓN FUTURA (diseño)" <<futuro>> {
+  database "Pacientes" as FPAT <<futuro>>
+  database "Medicamentos (catálogo)" as FMED <<futuro>>
+  database "Alergias clínicas" as FALL <<futuro>>
+  database "Identidad / Médicos" as FID <<futuro>>
+}
+
+PDOPAT ..> FPAT : "solo lectura (futuro)"
+PDOMED ..> FMED : "solo lectura (futuro)"
+PDOALL ..> FALL : "solo lectura (futuro)"
+FRONT ..> FID : "autenticación/autorización (futuro)"
+
+note right of CONTRACTS
+  Puertos en Domain: sustituyen la
+  fuente de datos sin tocar dominio:
+  hoy PDO/SQLite, mañana servicios del HIS.
+end note
+
+note right of PDOPRES
+  save() en transacción ACID:
+  prescripción + auditoría
+  (authorized_exception).
+end note
+
+note right of FRONT
+  Respuesta JSON:
+  {"status": <código>, "data": {...}}.
+  HTTP 200/201/403/404/409/422/500.
+end note
+
+note top of FRONT
+  Convención de colores:
+  - azul (#eaf2fb): IMPLEMENTADO en el Micro-HIS personal.
+  - crema (#fdf3d8) / lila (#f3e7f7): Domain / Persistence.
+  - gris (#f1f1f1) + línea punteada: INTEGRACIÓN FUTURA (diseño).
+end note
+@enduml
