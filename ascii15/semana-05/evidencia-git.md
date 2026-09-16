@@ -74,14 +74,14 @@ No syntax errors detected
 aa4d39c docs(asii-15): add week 5 client-server integration diagram
         (diagramas/integracion-cliente-servidor.puml · .png)
 
-<pendiente> docs(asii-15): document week 5 validation and git evidence
+deb4c74 docs(asii-15): document week 5 validation and git evidence
         (evidencia-validacion.md · este archivo)
 
-<pendiente> docs(asii-15): update week 5 ai declaration
+ba87a63 docs(asii-15): update week 5 ai declaration
         (DECLARACION_IA.md)
 ```
 
-El hash del commit de este archivo se registra al finalizar (evita el ciclo autorreferencial: no se escribe `evidencia-git.md` con su propio hash).
+La evidencia Git de Semana 5 fue finalizada en un commit documental posterior, por lo que el hash de este archivo no se registra aquí (se evita el ciclo autorreferencial).
 
 ## 9. Estado final
 
