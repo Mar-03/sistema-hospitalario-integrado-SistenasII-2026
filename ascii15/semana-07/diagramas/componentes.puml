@@ -1,0 +1,105 @@
+@startuml
+title ASII-15 - Componentes internos y refactor propuesto (Semana 7)
+
+skinparam componentStyle rectangle
+skinparam shadowing false
+skinparam wrapWidth 220
+skinparam maxMessageSize 160
+
+package "HTTP Entry / Composition Root" as entry {
+  [public/index.php] as index
+}
+
+package "Presentation" as presentation {
+  [Router\n(actual: routing + emision JSON)] as router
+  [PrescriptionController] as controller
+  [CreatePrescriptionRequest] as request
+  [JsonResponseEmitter\n(propuesto / pendiente Fase 2B)] as emitter #FFF2CC
+}
+
+package "Application" as application {
+  [CreatePrescriptionUseCase] as usecase
+  [CreatePrescriptionInput] as input
+  [CreatePrescriptionResult] as result
+}
+
+package "Domain" as domain {
+  [Entities\nPatient, Medication, Allergy, Prescription] as entities
+  [Value Objects\nDose, Route, Frequency] as valueobjects
+  [AllergyConflictDetector] as detector
+}
+
+package "Repository Contracts" as contracts {
+  [PatientRepositoryInterface] as patient_contract
+  [MedicationRepositoryInterface] as medication_contract
+  [AllergyRepositoryInterface] as allergy_contract
+  [PrescriptionRepositoryInterface] as prescription_contract
+}
+
+package "PDO Adapters" as pdo {
+  [PdoPatientRepository] as pdo_patient
+  [PdoMedicationRepository] as pdo_medication
+  [PdoAllergyRepository] as pdo_allergy
+  [PdoPrescriptionRepository] as pdo_prescription
+}
+
+database "SQLite\ndatabase/prescripciones.sqlite" as sqlite
+
+package "Audit" as audit {
+  [prescription_audits\naction=authorized_exception] as audit_table
+}
+
+package "Tests / InMemory Adapters" as tests {
+  [InMemory repositories] as inmemory
+  [Runner + Feature tests] as feature_tests
+}
+
+index --> router : registra rutas\ny despacha HTTP
+router --> controller : POST /prescriptions
+router --> emitter : diseno S7\nrespuesta JSON
+controller --> request : valida payload
+controller --> input : crea DTO
+controller --> usecase : ejecuta caso de uso
+usecase --> result : devuelve resultado
+usecase --> entities
+usecase --> valueobjects
+usecase --> detector : valida alergia critica
+usecase --> patient_contract
+usecase --> medication_contract
+usecase --> allergy_contract
+usecase --> prescription_contract
+
+patient_contract <|.. pdo_patient
+medication_contract <|.. pdo_medication
+allergy_contract <|.. pdo_allergy
+prescription_contract <|.. pdo_prescription
+
+pdo_patient --> sqlite
+pdo_medication --> sqlite
+pdo_allergy --> sqlite
+pdo_prescription --> sqlite
+pdo_prescription --> audit_table : inserta auditoria\nsi hay excepcion autorizada
+audit_table --> sqlite
+
+patient_contract <|.. inmemory
+medication_contract <|.. inmemory
+allergy_contract <|.. inmemory
+prescription_contract <|.. inmemory
+feature_tests --> inmemory
+feature_tests --> usecase
+
+note right of router
+Estado actual:
+Router incluye emision JSON.
+
+Diseno Semana 7:
+Router delega en JsonResponseEmitter.
+Pendiente de Fase 2B.
+end note
+
+note bottom of emitter
+Debe preservar:
+{"status": code, "data": body}
+end note
+
+@enduml
