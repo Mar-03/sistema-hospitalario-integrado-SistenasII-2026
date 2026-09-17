@@ -1,0 +1,34 @@
+@startsalt
+title Semana 9 - Wireframe baja fidelidad: Prescripcion con usabilidad
+{
+  {^"Prescripcion electronica - ASII-15"}
+  {"Los campos marcados con * son obligatorios."}
+  --
+  {"Paciente ID *" | "[ pat-safe                         ]"}
+  {"Ayuda" | "Ingreso manual mientras no exista catalogo."}
+  {"Medicamento ID *" | "[ med-para                        ]"}
+  {"Ayuda" | "Ingreso manual mientras no exista catalogo."}
+  {"Medico ID *" | "[ doc-1                           ]"}
+  {"Dosis *" | "[ 500 mg                          ]"}
+  {"Ejemplo" | "500 mg"}
+  {"Via *" | "[ oral v ]  oral | iv | im | subcutanea | topica | inhalada"}
+  {"Frecuencia *" | "[ cada 8 horas                   ]"}
+  {"Ejemplo" | "cada 8 horas / 1 vez al dia"}
+  {"Fecha (opcional)" | "[                                ]"}
+  {"Ayuda" | "Si se omite, el servidor utiliza la fecha correspondiente."}
+  --
+  {[Registrar prescripcion]}
+  --
+  {^"Errores asociados al contexto"}
+  {"Dosis" | "Formato invalido. Ejemplo esperado: 500 mg."}
+  {"Frecuencia" | "Use un formato compatible, por ejemplo: cada 8 horas."}
+  --
+  {^"Estados para el medico"}
+  {"EXITO" | "Prescripcion registrada correctamente."}
+  {"ERROR DE DATOS" | "Revise los campos indicados."}
+  {"ERROR TECNICO" | "No fue posible registrar la prescripcion. No se confirmo el registro."}
+  {"ALERTA CLINICA" | "Alergia critica detectada. La prescripcion no fue registrada."}
+  --
+  {"Trazabilidad" | "201 exito | 422 datos | 500 tecnico | 409 alergia critica"}
+}
+@endsalt
