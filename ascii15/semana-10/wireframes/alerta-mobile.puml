@@ -1,0 +1,25 @@
+@startsalt
+title Semana 10 - Wireframe responsive: Alerta mobile
+{
+  {^"ALERTA CLINICA CRITICA: ALERGIA"}
+  {"Se detecto un conflicto de alergia."}
+  {"LA PRESCRIPCION NO FUE REGISTRADA."}
+  {"Mensaje textual: no depende solo de color."}
+  --
+  { [Modificar prescripcion] }
+  { [Cancelar] }
+  { [Iniciar excepcion autorizada] }
+  --
+  {^"Excepcion autorizada"}
+  {"Esta accion requiere motivo y autorizador."}
+  {"Motivo *"}
+  {"[ Riesgo aceptado por especialista ]"}
+  {"Autorizado por *"}
+  {"[ doctor-9                         ]"}
+  { [Confirmar excepcion autorizada y registrar] }
+  --
+  {"Autorizacion incompleta"}
+  {"No fue posible autorizar la excepcion."}
+  {"Complete: motivo; autorizado por."}
+}
+@endsalt
