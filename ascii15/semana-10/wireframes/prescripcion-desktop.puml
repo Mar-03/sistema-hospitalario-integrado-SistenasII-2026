@@ -1,0 +1,25 @@
+@startsalt
+title Semana 10 - Wireframe responsive: Prescripcion desktop
+{
+  {^"Prescripcion electronica - escritorio"}
+  {"Los campos marcados con * son obligatorios."}
+  --
+  {^"Bloque Identificacion"}
+  {"Paciente ID *" | "[ pat-safe                 ]" | "Medicamento ID *" | "[ med-para                ]"}
+  {"Ayuda" | "Ingreso manual sin catalogo." | "Ayuda" | "Ingreso manual sin catalogo."}
+  {"Medico ID *" | "[ doc-1                    ]" | "" | ""}
+  --
+  {^"Bloque Datos clinicos"}
+  {"Dosis *" | "[ 500 mg                   ]" | "Via *" | "[ oral v ]"}
+  {"Ejemplo" | "500 mg" | "Valores" | "oral | iv | im | subcutanea | topica | inhalada"}
+  {"Frecuencia *" | "[ cada 8 horas            ]" | "Fecha (opcional)" | "[ yyyy-mm-dd / vacio      ]"}
+  {"Ejemplo" | "cada 8 horas / 1 vez al dia" | "Ayuda" | "Si se omite, usa fecha del servidor."}
+  --
+  {[Registrar prescripcion]}
+  --
+  {^"Mensajes visibles"}
+  {"EXITO" | "Prescripcion registrada correctamente."}
+  {"ERROR DE DATOS" | "Revise los campos indicados."}
+  {"ALERTA CLINICA" | "Alergia critica detectada. La prescripcion no fue registrada."}
+}
+@endsalt
