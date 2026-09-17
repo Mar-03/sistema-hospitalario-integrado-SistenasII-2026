@@ -73,18 +73,18 @@ Las herramientas de inteligencia artificial se utilizaron como apoyo para:
 - "Genera un diseno antes/despues que justifique arquitectonicamente la separacion de responsabilidades".
 - "Revisa el cumplimiento de la consigna de Semana 3 en el Micro-HIS (capas, PDO, prepared statements, regla de alergias, camino feliz y error de persistencia)".
 - "Agrega la cobertura de dosis invalida sin modificar los Value Objects".
-- "Organiza la evidencia de Semana 3 y el diagrama C4/UML en ascii15/semana-03".
+- "Organiza la evidencia de Semana 3 y el diagrama C4/UML en docs/semana-03".
 - "Organiza la entrada del Micro-HIS con MVC y verifica que el controlador no tenga SQL, PDO ni reglas de negocio".
 - "Documenta la arquitectura en capas, el patron Repository con adaptadores PDO e InMemory y las responsabilidades por capa".
 - "Analiza como un repositorio de datos compartido del HIS integraria el modulo ASII-15 sin modificar Domain".
-- "Inventaria los objetos reutilizables reales del Micro-HIS para ascii15/semana-04".
-- "Genera los diagramas arquitectura-capas y repositorio-datos-compartido (PlantUML + PNG) para ascii15/semana-04".
+- "Inventaria los objetos reutilizables reales del Micro-HIS para docs/semana-04".
+- "Genera los diagramas arquitectura-capas y repositorio-datos-compartido (PlantUML + PNG) para docs/semana-04".
 - "Actualiza DECLARACION_IA.md con las actividades reales de Semana 4 y valida pruebas, lint y git".
 - "Audita el backend personal real de ASII-15 (rutas, payload, validaciones y códigos HTTP) sin modificar código".
 - "Documenta el contrato REST real y la integración cliente-servidor de Semana 5 distinguiendo implementado de futuro".
 - "Elabora el análisis de monolito vs microservicio y los permisos de la Semana 5 a partir del código real".
 - "Ejecuta y registra la evidencia HTTP y de persistencia/auditoría reales de Semana 5".
-- "Genera el diagrama PlantUML de integración cliente-servidor (implementado + futuro) para ascii15/semana-05".
+- "Genera el diagrama PlantUML de integración cliente-servidor (implementado + futuro) para docs/semana-05".
 - "Construye Semana 6 como checkpoint del Primer Parcial sin funcionalidad nueva, verificando developer, evidencia acumulada y trazabilidad Git".
 - "Documenta el estado real del backend ASII-15, sus pruebas esperadas y las limitaciones actuales sin inventar resultados".
 - "Prepara un diagnostico de lectura para Semana 7 sobre componentes internos y oportunidades reales de refactorizacion".
