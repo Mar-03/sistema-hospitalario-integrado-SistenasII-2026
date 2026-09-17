@@ -1,0 +1,21 @@
+@startsalt
+title Semana 8 - Wireframe baja fidelidad: Alergia critica y excepcion
+{
+  {^"ALERTA DE ALERGIA CRITICA"}
+  {"Se detecto un conflicto de alergia."}
+  {"La prescripcion no fue registrada."}
+  --
+  { [Modificar prescripcion] | [Cancelar] | [Registrar excepcion] }
+  --
+  {^"Registrar excepcion autorizada"}
+  {"Motivo (reason)" | "[ Riesgo aceptado por especialista           ]"}
+  {"Autorizado por (authorized_by)" | "[ doctor-9                                  ]"}
+  { [Confirmar excepcion] }
+  --
+  {^"Resultado del reenvio por POST /prescriptions"}
+  {"201" | "Prescripcion registrada con excepcion autorizada."}
+  {"403" | "La autorizacion esta incompleta."}
+  --
+  {"Nota" | "No existe endpoint separado de excepcion; se reenvia exception dentro de POST /prescriptions."}
+}
+@endsalt
