@@ -6,7 +6,7 @@
 - GitHub: Mar-03
 - Modulo: Prescripciones electronicas con validacion de alergias
 - Proceso modelado: Creacion de prescripcion con verificacion previa de alergias
-- Semanas cubiertas: 1, 2, 3, 4, 5, 6, 7 y 8
+- Semanas cubiertas: 1, 2, 3, 4, 5, 6, 7, 8 y 9
 
 ## Herramientas utilizadas
 
@@ -52,6 +52,11 @@ Las herramientas de inteligencia artificial se utilizaron como apoyo para:
 - Relacionar el flujo UX con el contrato real `POST /prescriptions`, sus payloads y codigos HTTP.
 - Proponer wireframes de baja fidelidad para el formulario principal y el flujo de alergia/excepcion autorizada.
 - Apoyar la generacion de fuentes PlantUML/SALT y la revision documental de los wireframes.
+- Auditar los wireframes de Semana 8 desde criterios de usabilidad y accesibilidad conceptual.
+- Identificar mejoras de claridad, prevencion de errores, retroalimentacion y jerarquia de acciones para Semana 9.
+- Comparar los wireframes S8 con versiones revisadas S9 sin modificar los artefactos de Semana 8.
+- Apoyar el diseno de wireframes S9 de baja fidelidad en PlantUML/SALT y su renderizado a PNG.
+- Documentar criterios futuros de accesibilidad sin afirmar implementacion de HTML, ARIA, teclado ni lector de pantalla.
 
 
 ## Prompts relevantes
@@ -87,11 +92,14 @@ Las herramientas de inteligencia artificial se utilizaron como apoyo para:
 - "Construye Semana 8 como analisis UX y wireframes de baja fidelidad sin implementar frontend ni modificar backend".
 - "Audita los endpoints reales disponibles y distingue backend actual, UX propuesta e integraciones futuras".
 - "Genera wireframes PlantUML/SALT para prescripcion principal y alergia critica con excepcion autorizada".
+- "Continua Semana 9 con analisis de usabilidad y accesibilidad sin modificar backend ni crear frontend".
+- "Compara los wireframes de Semana 8 contra una version revisada por claridad, errores y jerarquia de acciones".
+- "Genera wireframes S9 de baja fidelidad para prescripcion usable y alerta clinica accesible".
 
 
 ## Partes aceptadas o modificadas
 
-Las propuestas generadas por IA fueron revisadas manualmente antes de aceptarse. Se modificaron nombres, actores, casos de uso, flujos alternativos, mensajes, estructura de los diagramas, RF/RNF, criterios de aceptacion, justificacion SOLID y la organizacion de la evidencia y del diagrama C4/UML de Semana 3 para mantener coherencia con la asignacion individual y con el repositorio. En Semana 4 se ajusto la redaccion de capas, responsabilidades, inventario de objetos reutilizables, analisis del repositorio de datos compartido, diagramas PlantUML y evidencia Git para reflejar exactamente el codigo real del Micro-HIS. En Semana 5 se reviso que el contrato REST, los payloads, las validaciones, los codigos HTTP, los permisos, el analisis de monolito vs microservicio y la evidencia (HTTP, persistencia y auditoria) coincidan exactamente con el codigo y con la ejecucion real, sin presentar diseno futuro como implementado. En Semana 6 se acepto solo apoyo documental para revisar el estado acumulado, organizar evidencia del Primer Parcial, validar consistencia y registrar trazabilidad; no se atribuye a la IA implementacion de funcionalidad nueva. En Semana 7 Fase 2A se acepto apoyo para analizar componentes, comparar responsabilidades, seleccionar un refactor propuesto y preparar documentacion/diagrama. En Semana 7 Fase 2B se acepto apoyo para implementar el refactor minimo `JsonResponseEmitter`, actualizar la evidencia y verificar que no hubiera cambios observables de comportamiento. En Semana 8 se acepto apoyo para analizar UX, relacionar el flujo de usuario con la API real, disenar wireframes de baja fidelidad y documentar integraciones futuras; no se implemento frontend.
+Las propuestas generadas por IA fueron revisadas manualmente antes de aceptarse. Se modificaron nombres, actores, casos de uso, flujos alternativos, mensajes, estructura de los diagramas, RF/RNF, criterios de aceptacion, justificacion SOLID y la organizacion de la evidencia y del diagrama C4/UML de Semana 3 para mantener coherencia con la asignacion individual y con el repositorio. En Semana 4 se ajusto la redaccion de capas, responsabilidades, inventario de objetos reutilizables, analisis del repositorio de datos compartido, diagramas PlantUML y evidencia Git para reflejar exactamente el codigo real del Micro-HIS. En Semana 5 se reviso que el contrato REST, los payloads, las validaciones, los codigos HTTP, los permisos, el analisis de monolito vs microservicio y la evidencia (HTTP, persistencia y auditoria) coincidan exactamente con el codigo y con la ejecucion real, sin presentar diseno futuro como implementado. En Semana 6 se acepto solo apoyo documental para revisar el estado acumulado, organizar evidencia del Primer Parcial, validar consistencia y registrar trazabilidad; no se atribuye a la IA implementacion de funcionalidad nueva. En Semana 7 Fase 2A se acepto apoyo para analizar componentes, comparar responsabilidades, seleccionar un refactor propuesto y preparar documentacion/diagrama. En Semana 7 Fase 2B se acepto apoyo para implementar el refactor minimo `JsonResponseEmitter`, actualizar la evidencia y verificar que no hubiera cambios observables de comportamiento. En Semana 8 se acepto apoyo para analizar UX, relacionar el flujo de usuario con la API real, disenar wireframes de baja fidelidad y documentar integraciones futuras; no se implemento frontend. En Semana 9 se acepto apoyo para auditar usabilidad y accesibilidad conceptual, proponer mejoras priorizadas, comparar S8/S9 y generar wireframes revisados de baja fidelidad; no se implemento frontend real.
 
 ## Validacion humana
 
@@ -142,6 +150,10 @@ La estudiante verifico manualmente:
 - Que Semana 8 no implementa frontend, HTML, CSS, JavaScript, Vue ni React.
 - Que los wireframes representan baja fidelidad y distinguen backend actual de integraciones futuras.
 - Que no se presentan endpoints de catalogo como implementados porque el backend actual solo expone `GET /health` y `POST /prescriptions`.
+- Que Semana 9 parte de `origin/developer` actualizado con Semana 8 mergeada.
+- Que Semana 9 no modifica Semana 8, backend, endpoints, payloads ni reglas clinicas.
+- Que los criterios de accesibilidad de Semana 9 son especificaciones futuras y no implementacion de ARIA, lector de pantalla, teclado, CSS ni HTML.
+- Que no se adelanta Semana 10 responsive ni Semana 11 mockup/prototipo de alta fidelidad.
 
 ## Responsabilidad de autoria
 
