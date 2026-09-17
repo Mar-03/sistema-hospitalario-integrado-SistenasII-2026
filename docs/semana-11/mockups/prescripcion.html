@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ASII-15 - Mockup prescripcion electronica</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="page-header">
+    <div class="shell">
+      <p class="eyebrow">ASII-15</p>
+      <h1>Prescripcion electronica</h1>
+      <p class="lead">Mockup visual estatico para registrar prescripciones con validacion de alergias.</p>
+      <nav class="state-nav" aria-label="Estados del prototipo">
+        <a href="#registro">Registro</a>
+        <a href="#exito">Exito</a>
+        <a href="#validacion">Validacion</a>
+        <a href="#alergia">Alergia</a>
+        <a href="#excepcion">Excepcion</a>
+        <a href="#error-tecnico">Error tecnico</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="shell layout">
+    <section id="registro" class="card form-card" aria-labelledby="registro-title">
+      <div class="section-heading">
+        <p class="eyebrow">Formulario principal</p>
+        <h2 id="registro-title">Prescripcion electronica</h2>
+        <p>Los campos marcados con <strong>*</strong> son obligatorios. Los botones de este mockup no envian datos reales.</p>
+      </div>
+
+      <form class="prescription-form">
+        <fieldset>
+          <legend>Identificacion</legend>
+          <div class="field-grid three-columns">
+            <div class="field">
+              <label for="patient-id">Paciente ID <span aria-hidden="true">*</span></label>
+              <input id="patient-id" name="patient_id" type="text" value="pat-safe" aria-describedby="patient-help">
+              <p id="patient-help" class="help">Identificador interno del paciente.</p>
+            </div>
+            <div class="field">
+              <label for="medication-id">Medicamento ID <span aria-hidden="true">*</span></label>
+              <input id="medication-id" name="medication_id" type="text" value="med-para" aria-describedby="medication-help">
+              <p id="medication-help" class="help">Identificador interno del medicamento.</p>
+            </div>
+            <div class="field">
+              <label for="doctor-id">Medico ID <span aria-hidden="true">*</span></label>
+              <input id="doctor-id" name="doctor_id" type="text" value="doc-1" aria-describedby="doctor-help">
+              <p id="doctor-help" class="help">Identificador del medico responsable.</p>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Datos clinicos</legend>
+          <div class="field-grid two-columns">
+            <div class="field">
+              <label for="dose">Dosis <span aria-hidden="true">*</span></label>
+              <input id="dose" name="dose" type="text" value="500 mg" aria-describedby="dose-help">
+              <p id="dose-help" class="help">Ejemplo compatible: 500 mg.</p>
+            </div>
+            <div class="field">
+              <label for="route">Via <span aria-hidden="true">*</span></label>
+              <select id="route" name="route" aria-describedby="route-help">
+                <option value="oral">Oral</option>
+                <option value="iv">IV</option>
+                <option value="im">IM</option>
+                <option value="subcutanea">Subcutanea</option>
+                <option value="topica">Topica</option>
+                <option value="inhalada">Inhalada</option>
+              </select>
+              <p id="route-help" class="help">Opciones reales del dominio.</p>
+            </div>
+            <div class="field">
+              <label for="frequency">Frecuencia <span aria-hidden="true">*</span></label>
+              <input id="frequency" name="frequency" type="text" value="cada 8 horas" aria-describedby="frequency-help">
+              <p id="frequency-help" class="help">Ejemplos compatibles: cada 8 horas, cada 2 dias, 1 vez al dia.</p>
+            </div>
+            <div class="field">
+              <label for="date">Fecha opcional</label>
+              <input id="date" name="date" type="date" aria-describedby="date-help">
+              <p id="date-help" class="help">Si se omite, el backend utiliza la fecha correspondiente.</p>
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="actions">
+          <button type="button" class="button primary">Registrar prescripcion</button>
+          <button type="button" class="button secondary">Limpiar vista</button>
+        </div>
+      </form>
+    </section>
+
+    <section id="exito" class="card state success" aria-labelledby="exito-title">
+      <p class="eyebrow">Estado de resultado</p>
+      <h2 id="exito-title">Prescripcion registrada correctamente.</h2>
+      <p>El registro de la prescripcion fue confirmado.</p>
+    </section>
+
+    <section id="validacion" class="card state validation" aria-labelledby="validacion-title">
+      <p class="eyebrow">Error de datos</p>
+      <h2 id="validacion-title">Revise los campos indicados.</h2>
+      <div class="field error-field">
+        <label for="invalid-dose">Dosis <span aria-hidden="true">*</span></label>
+        <input id="invalid-dose" type="text" value="500" aria-describedby="invalid-dose-error">
+        <p id="invalid-dose-error" class="error-text">Formato invalido. Ejemplo esperado: 500 mg.</p>
+      </div>
+    </section>
+
+    <section id="alergia" class="card critical" aria-labelledby="alergia-title">
+      <p class="eyebrow">Alerta clinica</p>
+      <h2 id="alergia-title">ALERTA CLÍNICA CRÍTICA: ALERGIA</h2>
+      <p>Se detecto un conflicto de alergia.</p>
+      <p class="not-saved">LA PRESCRIPCIÓN NO FUE REGISTRADA.</p>
+      <div class="actions stacked-on-mobile">
+        <button type="button" class="button primary">Modificar prescripcion</button>
+        <button type="button" class="button secondary">Cancelar</button>
+        <button type="button" class="button warning">Iniciar excepcion autorizada</button>
+      </div>
+    </section>
+
+    <section id="excepcion" class="card exception" aria-labelledby="excepcion-title">
+      <p class="eyebrow">Accion excepcional</p>
+      <h2 id="excepcion-title">Excepcion autorizada</h2>
+      <p>La excepcion requiere motivo y responsable de autorizacion.</p>
+      <div class="field-grid two-columns">
+        <div class="field wide">
+          <label for="reason">Motivo de la excepcion <span aria-hidden="true">*</span></label>
+          <textarea id="reason" name="reason" rows="4">Riesgo aceptado por especialista.</textarea>
+        </div>
+        <div class="field">
+          <label for="authorized-by">Autorizado por <span aria-hidden="true">*</span></label>
+          <input id="authorized-by" name="authorized_by" type="text" value="doctor-9">
+        </div>
+      </div>
+      <div class="actions">
+        <button type="button" class="button warning">Confirmar excepcion autorizada y registrar</button>
+      </div>
+      <div class="inline-alert" aria-label="Autorizacion incompleta">
+        <strong>No se puede registrar la excepcion autorizada.</strong>
+        <p>Complete: motivo y autorizado por.</p>
+      </div>
+    </section>
+
+    <section id="error-tecnico" class="card state technical" aria-labelledby="error-title">
+      <p class="eyebrow">Error tecnico</p>
+      <h2 id="error-title">No fue posible registrar la prescripcion.</h2>
+      <p>No se confirmo el registro.</p>
+      <p class="help">El detalle tecnico pertenece a logs internos, no al mensaje para el medico.</p>
+    </section>
+  </main>
+</body>
+</html>

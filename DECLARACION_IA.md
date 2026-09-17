@@ -6,7 +6,7 @@
 - GitHub: Mar-03
 - Modulo: Prescripciones electronicas con validacion de alergias
 - Proceso modelado: Creacion de prescripcion con verificacion previa de alergias
-- Semanas cubiertas: 1, 2, 3, 4, 5, 6, 7, 8, 9 y 10
+- Semanas cubiertas: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 y 11
 
 ## Herramientas utilizadas
 
@@ -61,6 +61,10 @@ Las herramientas de inteligencia artificial se utilizaron como apoyo para:
 - Proponer estrategia conceptual de layout sin definir breakpoints reales ni frontend implementado.
 - Generar wireframes responsive de baja fidelidad en PlantUML/SALT para formulario desktop, formulario mobile y alerta mobile.
 - Documentar la preservacion de accesibilidad S9 durante la adaptacion responsive.
+- Transformar los wireframes y criterios de Semanas 8-10 en un mockup visual estatico de Semana 11.
+- Apoyar decisiones visuales, jerarquia de estados y representacion de flujos en HTML/CSS local.
+- Revisar que el prototipo no use JavaScript, dependencias externas ni conexion API real.
+- Documentar el alcance del mockup, flujo del prototipo, comparacion S8-S11 y evidencia de validacion.
 
 
 ## Prompts relevantes
@@ -102,6 +106,9 @@ Las herramientas de inteligencia artificial se utilizaron como apoyo para:
 - "Desarrolla Semana 10 como documentacion responsive y wireframes adaptados sin implementar frontend real".
 - "Analiza escritorio, tablet y movil preservando los criterios de accesibilidad de Semana 9".
 - "Genera wireframes PlantUML/SALT para prescripcion desktop, prescripcion mobile y alerta mobile".
+- "Completa Semana 11 con un mockup HTML/CSS estatico sin backend, JavaScript ni dependencias externas".
+- "Convierte los wireframes de Semanas 8-10 en un prototipo visual con estados de exito, validacion, alergia, excepcion y error tecnico".
+- "Valida que el mockup preserve accesibilidad conceptual y no implemente frontend funcional".
 
 
 ## Partes aceptadas o modificadas
@@ -165,6 +172,9 @@ La estudiante verifico manualmente:
 - Que Semana 10 no modifica Semanas 8/9, backend, endpoints, payloads ni reglas clinicas.
 - Que Semana 10 documenta adaptacion responsive y wireframes de baja fidelidad, sin HTML, CSS, JavaScript ni frontend funcional.
 - Que Semana 10 no adelanta Semana 11: no crea mockup de alta fidelidad, branding ni prototipo navegable.
+- Que Semana 11 parte de `origin/developer` actualizado con Semana 10 y la reorganizacion documental bajo `docs/` mergeadas.
+- Que Semana 11 crea un mockup/prototipo visual estatico con HTML/CSS local, sin JavaScript, sin API real y sin dependencias externas.
+- Que Semana 11 no modifica backend, endpoints, reglas clinicas, persistencia, tests ni semanas anteriores.
 
 ## Responsabilidad de autoria
 
