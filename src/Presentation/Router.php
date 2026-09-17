@@ -2,10 +2,17 @@
 
 namespace Mod15\Presentation;
 
+use Mod15\Presentation\Responses\JsonResponseEmitter;
+
 final class Router
 {
     /** @var array<string, callable> */
     private array $routes = [];
+
+    public function __construct(private ?JsonResponseEmitter $emitter = null)
+    {
+        $this->emitter ??= new JsonResponseEmitter();
+    }
 
     public function get(string $path, callable $handler): void
     {
@@ -38,11 +45,6 @@ final class Router
 
     private function respond(int $status, array $body): void
     {
-        if (PHP_SAPI !== 'cli') {
-            http_response_code($status);
-            header('Content-Type: application/json');
-        }
-
-        echo json_encode(['status' => $status, 'data' => $body], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . PHP_EOL;
+        $this->emitter->emit($status, $body);
     }
 }
