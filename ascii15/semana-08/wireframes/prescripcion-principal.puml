@@ -1,0 +1,25 @@
+@startsalt
+title Semana 8 - Wireframe baja fidelidad: Prescripcion principal
+{
+  {^"Prescripcion electronica - ASII-15"}
+  {"Medico registra una prescripcion usando POST /prescriptions"}
+  --
+  {"Paciente ID" | "[ pat-safe                         ]"}
+  {"Medicamento ID" | "[ med-para                        ]"}
+  {"Medico ID" | "[ doc-1                           ]"}
+  {"Dosis" | "[ 500 mg                          ]"}
+  {"Via" | "[ oral v ]  oral | iv | im | subcutanea | topica | inhalada"}
+  {"Frecuencia" | "[ cada 8 horas                   ]"}
+  {"Fecha (opcional)" | "[ yyyy-mm-dd / vacio              ]"}
+  --
+  {[Registrar prescripcion]}
+  --
+  {^"Estado / mensajes"}
+  {"201" | "Prescripcion registrada correctamente."}
+  {"422" | "Revise los datos ingresados."}
+  {"500" | "No fue posible registrar la prescripcion."}
+  {"409" | "Alergia critica detectada -> ver wireframe alergia/excepcion."}
+  --
+  {"Limitacion" | "Sin catalogos dinamicos: se ingresan IDs porque no hay GET /patients ni GET /medications."}
+}
+@endsalt
