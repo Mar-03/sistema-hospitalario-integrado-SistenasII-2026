@@ -29,14 +29,14 @@ Se realizaron:
 
 Enlaces:
 
-- `ascii15/uml/README.md`
-- `ascii15/uml/casos-de-uso.puml`
-- `ascii15/uml/actividad.puml`
-- `ascii15/uml/secuencia.puml`
-- `ascii15/imagenes/`
-- `ascii15/matriz-trazabilidad.md`
-- `ascii15/evidencia-git.md`
-- `ascii15/guia-defensa.md`
+- `docs/semana-01/uml/README.md`
+- `docs/semana-01/uml/casos-de-uso.puml`
+- `docs/semana-01/uml/actividad.puml`
+- `docs/semana-01/uml/secuencia.puml`
+- `docs/semana-01/imagenes/`
+- `docs/semana-01/matriz-trazabilidad.md`
+- `docs/semana-01/evidencia-git.md`
+- `docs/semana-01/guia-defensa.md`
 
 ### Semana 2 - Proceso y modelo de diseño; principios SOLID
 
@@ -53,16 +53,16 @@ Se realizaron:
 
 Enlaces:
 
-- `ascii15/semana-02/README.md`
-- `ascii15/semana-02/proceso-global.puml`
-- `ascii15/semana-02/proceso-prescripciones.puml`
-- `ascii15/semana-02/diseno-antes-despues.puml`
-- `ascii15/semana-02/diagrama-procesos-global.md`
-- `ascii15/semana-02/infraestructura-red-servidor.md`
-- `ascii15/semana-02/infraestructura-red-servidor.puml`
-- `ascii15/semana-02/evidencia-git.md`
-- `ascii15/semana-02/evidencia-validacion.md`
-- `ascii15/semana-02/guia-defensa.md`
+- `docs/semana-02/README.md`
+- `docs/semana-02/proceso-global.puml`
+- `docs/semana-02/proceso-prescripciones.puml`
+- `docs/semana-02/diseno-antes-despues.puml`
+- `docs/semana-02/diagrama-procesos-global.md`
+- `docs/semana-02/infraestructura-red-servidor.md`
+- `docs/semana-02/infraestructura-red-servidor.puml`
+- `docs/semana-02/evidencia-git.md`
+- `docs/semana-02/evidencia-validacion.md`
+- `docs/semana-02/guia-defensa.md`
 
 ### Avance posterior
 
@@ -71,13 +71,14 @@ El repositorio contiene avances posteriores del módulo en una rama de trabajo i
 ## Estructura del repositorio
 
 ```text
-ascii15/
-├── imagenes/
-├── uml/
-├── semana-02/
-├── evidencia-git.md
-├── guia-defensa.md
-└── matriz-trazabilidad.md
+docs/
+├── semana-01/
+│   ├── imagenes/
+│   ├── uml/
+│   ├── evidencia-git.md
+│   ├── guia-defensa.md
+│   └── matriz-trazabilidad.md
+└── semana-02/
 ```
 
 ## Flujo Git
@@ -98,7 +99,7 @@ main
 
 ## Referencias útiles
 
-- `ascii15/flujo-git.md`
+- `docs/semana-01/flujo-git.md`
 - `docs/README.md`
 - `docs/ESPECIFICACION.md`
 - `docs/ADR-001-arquitectura.md`
