@@ -1,14 +1,12 @@
 # Semana 7 - Evidencia de validacion
 
-## 1. Alcance de esta evidencia
+## 1. Alcance
 
-Semana 7 Fase 2A documenta el analisis de componentes y el diseno del refactor. No modifica codigo funcional y no ejecuta refactorizacion porque PHP no esta disponible en el entorno actual.
+Esta evidencia demuestra que Semana 7 aplica un refactor estructural y no una funcionalidad nueva. El objetivo es separar la emision HTTP/JSON del Router preservando comportamiento observable.
 
-## 2. Baseline funcional historico confirmado
+## 2. Baseline historico confirmado
 
-La ultima validacion funcional confirmada corresponde a Semana 5, antes del checkpoint documental de Semana 6.
-
-Resultados historicos registrados:
+La ultima validacion funcional previa a Semana 7 correspondia a Semana 5:
 
 ```text
 Migration completed
@@ -29,48 +27,112 @@ Contrato historicamente confirmado:
 | Ruta inexistente | `404` |
 | Falla de persistencia | `500` por prueba automatizada |
 
-Persistencia historicamente confirmada:
+## 3. Entorno preparado para Fase 2B
 
-- Caso feliz persiste.
-- `409` no persiste.
-- `403` no persiste.
-- `422` no persiste.
-- Excepcion autorizada persiste.
-- Auditoria `authorized_exception` funciona en `prescription_audits`.
-
-## 3. Validacion actual S7
-
-Validacion actual: bloqueada temporalmente.
-
-Comandos requeridos para baseline actual:
+PHP portable fuera del repositorio:
 
 ```text
-php bin/console.php migrate:fresh --seed
-php bin/console.php test
-php bin/console.php test --filter=Mod15PrescriptionTest
+C:\Users\Omega20\Documents\tools\php-8.3\php.exe
+PHP 8.3.33
 ```
 
-Resultado del entorno:
+Extensiones confirmadas por `php -m`:
+
+- `PDO`.
+- `pdo_sqlite`.
+- `sqlite3`.
+- `json`.
+
+Prueba SQLite previa:
 
 ```text
-Get-Command php -ErrorAction SilentlyContinue
-# sin resultado
-
-where.exe php
-INFORMACION: no se pudo encontrar ningun archivo para los patrones dados.
+new PDO('sqlite::memory:') -> ok
 ```
 
-Conclusion: PHP no esta disponible en el entorno actual, por lo que no se afirma ejecucion nueva de migraciones, tests ni pruebas HTTP para Semana 7 Fase 2A.
+PlantUML fuera del repositorio:
 
-## 4. Validacion post-refactor
+```text
+C:\Users\Omega20\Documents\tools\plantuml\plantuml.jar
+PlantUML 1.2026.8
+```
 
-Pendiente de Fase 2B.
+## 4. Baseline pre-refactor
 
-Cuando PHP este disponible, Fase 2B debe registrar antes y despues:
+Antes de modificar `Router` se ejecuto:
 
-- `php bin/console.php migrate:fresh --seed`.
-- `php bin/console.php test`.
-- `php bin/console.php test --filter=Mod15PrescriptionTest`.
-- Pruebas HTTP de `GET /health`, `POST /prescriptions`, alergia critica, excepciones, datos invalidos, ruta inexistente y persistencia fallida.
+```text
+Migration completed
+Tests: 6, Failed: 0
+Tests: 5, Failed: 0
+```
 
-La evidencia final debe demostrar que el refactor separa responsabilidades sin cambiar comportamiento observable.
+HTTP pre-refactor:
+
+| Caso | Resultado |
+|---|---|
+| `GET /health` | `200` |
+| `POST /prescriptions` valida | `201` |
+| Alergia critica sin excepcion | `409` |
+| Excepcion autorizada completa | `201` |
+| Excepcion incompleta | `403` |
+| Dosis invalida | `422` |
+| Ruta inexistente | `404` |
+| Falla de persistencia | `500` por prueba automatizada |
+
+Persistencia pre-refactor:
+
+```text
+prescriptions=2
+prescription_audits=1
+```
+
+## 5. Validacion post-refactor
+
+Lint:
+
+```text
+No syntax errors detected in src\Presentation\Responses\JsonResponseEmitter.php
+No syntax errors detected in src\Presentation\Router.php
+```
+
+Pruebas:
+
+```text
+Migration completed
+Tests: 6, Failed: 0
+Tests: 5, Failed: 0
+```
+
+HTTP post-refactor:
+
+| Caso | HTTP | JSON `status` | `status`/`data` presentes |
+|---|---:|---:|---|
+| `GET /health` | `200` | `200` | si |
+| `POST /prescriptions` valida | `201` | `201` | si |
+| Alergia critica sin excepcion | `409` | `409` | si |
+| Excepcion autorizada completa | `201` | `201` | si |
+| Excepcion incompleta | `403` | `403` | si |
+| Dosis invalida | `422` | `422` | si |
+| Ruta inexistente | `404` | `404` | si |
+
+Persistencia post-refactor:
+
+```text
+prescriptions=2
+prescription_audits=1
+```
+
+## 6. Comparacion antes/despues
+
+| Aspecto | Antes | Despues |
+|---|---|---|
+| Tests generales | `6/6` | `6/6` |
+| Tests especificos | `5/5` | `5/5` |
+| Contrato HTTP | `200`, `201`, `409`, `201`, `403`, `422`, `404` | Igual |
+| Error persistencia | `500` por test | Igual |
+| JSON | `status` + `data` | Igual |
+| Prescripciones persistidas | `2` | `2` |
+| Auditorias | `1` | `1` |
+| `authorized_exception` | `1` | `1` |
+
+Conclusion: estructura modificada, comportamiento preservado.

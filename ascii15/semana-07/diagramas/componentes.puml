@@ -1,5 +1,5 @@
 @startuml
-title ASII-15 - Componentes internos y refactor propuesto (Semana 7)
+title ASII-15 - Componentes internos y refactor aplicado (Semana 7)
 
 skinparam componentStyle rectangle
 skinparam shadowing false
@@ -11,10 +11,10 @@ package "HTTP Entry / Composition Root" as entry {
 }
 
 package "Presentation" as presentation {
-  [Router\n(actual: routing + emision JSON)] as router
+  [Router\n(routing + dispatch)] as router
   [PrescriptionController] as controller
   [CreatePrescriptionRequest] as request
-  [JsonResponseEmitter\n(propuesto / pendiente Fase 2B)] as emitter #FFF2CC
+  [JsonResponseEmitter\n(implementado)] as emitter #D5E8D4
 }
 
 package "Application" as application {
@@ -56,7 +56,7 @@ package "Tests / InMemory Adapters" as tests {
 
 index --> router : registra rutas\ny despacha HTTP
 router --> controller : POST /prescriptions
-router --> emitter : diseno S7\nrespuesta JSON
+router --> emitter : delega\nrespuesta JSON
 controller --> request : valida payload
 controller --> input : crea DTO
 controller --> usecase : ejecuta caso de uso
@@ -89,12 +89,12 @@ feature_tests --> inmemory
 feature_tests --> usecase
 
 note right of router
-Estado actual:
-Router incluye emision JSON.
+Antes:
+Router incluia emision JSON.
 
-Diseno Semana 7:
+Despues:
 Router delega en JsonResponseEmitter.
-Pendiente de Fase 2B.
+Fase 2B implementada.
 end note
 
 note bottom of emitter

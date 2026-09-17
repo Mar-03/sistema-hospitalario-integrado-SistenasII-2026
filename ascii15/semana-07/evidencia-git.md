@@ -62,17 +62,40 @@ No implementa el refactor en codigo.
 | `ascii15/semana-07/evidencia-validacion.md` | nuevo |
 | `ascii15/semana-07/evidencia-git.md` | este archivo |
 | `ascii15/semana-07/diagramas/componentes.puml` | nuevo |
-| `ascii15/semana-07/diagramas/componentes.png` | pendiente si PlantUML no esta disponible |
+| `ascii15/semana-07/diagramas/componentes.png` | generado |
 | `DECLARACION_IA.md` | actualizado |
 
-## 7. Pendiente Fase 2B
+## 7. Fase 2B
 
-Cuando PHP este disponible:
+Fase 2B realiza:
 
-- Ejecutar baseline antes del refactor.
-- Implementar `JsonResponseEmitter`.
-- Ajustar `Router` y wiring minimo si hace falta.
-- Ejecutar pruebas despues del refactor.
-- Completar evidencia de validacion y resultado real del refactor.
+- Preparacion de PHP 8.3.33 portable fuera del repositorio.
+- Preparacion de `plantuml.jar` fuera del repositorio.
+- Render de `componentes.png`.
+- Baseline pre-refactor.
+- Implementacion de `src/Presentation/Responses/JsonResponseEmitter.php`.
+- Refactor minimo de `src/Presentation/Router.php`.
+- Validacion post-refactor por lint, tests, HTTP, persistencia y auditoria.
 
-No se inventan hashes futuros ni resultados no ejecutados.
+Archivos de codigo modificados/creados:
+
+- `src/Presentation/Responses/JsonResponseEmitter.php`.
+- `src/Presentation/Router.php`.
+
+Commit funcional del refactor:
+
+```text
+bbc1630 refactor(asii-15): separate json response emission from router
+```
+
+Archivos de documentacion actualizados:
+
+- `ascii15/semana-07/README.md`.
+- `ascii15/semana-07/componentes.md`.
+- `ascii15/semana-07/refactorizacion.md`.
+- `ascii15/semana-07/evidencia-validacion.md`.
+- `ascii15/semana-07/evidencia-git.md`.
+- `ascii15/semana-07/diagramas/componentes.puml`.
+- `ascii15/semana-07/diagramas/componentes.png`.
+
+No se modificaron Domain, Application, Persistence, rutas, tests, migraciones, seeds ni contrato REST.

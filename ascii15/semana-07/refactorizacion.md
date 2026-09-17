@@ -1,27 +1,27 @@
-# Semana 7 - Refactorizacion propuesta
+# Semana 7 - Refactorizacion aplicada
 
 ## 1. Problema
 
-`src/Presentation/Router.php` mezcla routing y emision HTTP/JSON.
+`src/Presentation/Router.php` mezclaba routing y emision HTTP/JSON.
 
-Actualmente el Router:
+Antes del refactor el Router:
 
-- Registra rutas con `get()` y `post()`.
-- Construye la clave metodo + path.
-- Localiza el handler.
-- Ejecuta el handler.
-- Obtiene el `status` desde el arreglo de resultado.
-- Configura `http_response_code`.
-- Configura `Content-Type: application/json`.
-- Ejecuta `json_encode`.
-- Imprime la respuesta.
-- Captura errores genericos y los convierte en `500`.
+- Registraba rutas con `get()` y `post()`.
+- Construia la clave metodo + path.
+- Localizaba el handler.
+- Ejecutaba el handler.
+- Obtenia el `status` desde el arreglo de resultado.
+- Configuraba `http_response_code`.
+- Configuraba `Content-Type: application/json`.
+- Ejecutaba `json_encode`.
+- Imprimia la respuesta.
+- Capturaba errores genericos y los convertia en `500`.
 
-La clase funciona, pero combina dos responsabilidades: decidir a que handler va una peticion y emitir una respuesta HTTP JSON.
+La clase funcionaba, pero combinaba dos responsabilidades: decidir a que handler va una peticion y emitir una respuesta HTTP JSON.
 
 ## 2. Estado anterior
 
-Flujo actual:
+Flujo anterior:
 
 ```text
 Router
@@ -33,7 +33,7 @@ Router
   -> imprime respuesta
 ```
 
-Formato actual de respuesta que debe preservarse:
+Formato de respuesta que debia preservarse:
 
 ```json
 {
@@ -47,27 +47,27 @@ Formato actual de respuesta que debe preservarse:
 
 ## 3. Principio relacionado
 
-El principio relacionado es Responsabilidad Unica / separacion de responsabilidades. El Router deberia concentrarse en routing y dispatch; la emision de respuesta JSON deberia concentrarse en un componente de salida.
+El principio relacionado es Responsabilidad Unica / separacion de responsabilidades. El Router debe concentrarse en routing y dispatch; la emision de respuesta JSON debe concentrarse en un componente de salida.
 
 ## 4. Decision
 
-Se selecciona un unico refactor principal para Semana 7:
+Se selecciono un unico refactor principal para Semana 7:
 
 ```text
 Extraer JsonResponseEmitter desde Router
 ```
 
-El componente propuesto es:
+El componente implementado es:
 
 ```text
 src/Presentation/Responses/JsonResponseEmitter.php
 ```
 
-Este archivo todavia no se crea en Fase 2A porque PHP no esta disponible para validar antes y despues. La implementacion queda pendiente para Fase 2B.
+En Fase 2A quedo propuesto porque PHP no estaba disponible. En Fase 2B se implemento despues de confirmar baseline con PHP 8.3.33 portable.
 
-## 5. Diseno propuesto
+## 5. Diseno aplicado
 
-Flujo futuro:
+Flujo despues del refactor:
 
 ```text
 Router
@@ -81,15 +81,16 @@ Router
        -> emite respuesta
 ```
 
-Responsabilidad futura del Router:
+Responsabilidad actual del Router:
 
 - Registrar rutas.
 - Localizar handler.
 - Ejecutar handler.
 - Manejar dispatch.
+- Mantener 404 y 500 generico.
 - Delegar emision de respuesta.
 
-Responsabilidad futura de `JsonResponseEmitter`:
+Responsabilidad actual de `JsonResponseEmitter`:
 
 - Recibir `status` y `body`.
 - Configurar `http_response_code` cuando no se ejecuta por CLI.
@@ -97,9 +98,9 @@ Responsabilidad futura de `JsonResponseEmitter`:
 - Mantener el formato `{"status": <code>, "data": {...}}`.
 - Emitir JSON con `JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES`.
 
-## 6. Contrato que no debe cambiar
+## 6. Contrato que no cambio
 
-No se debe cambiar:
+No se cambio:
 
 - `GET /health`.
 - `POST /prescriptions`.
@@ -112,13 +113,13 @@ No se debe cambiar:
 - Migraciones.
 - Seeds.
 
-## 7. Riesgo
+## 7. Riesgo controlado
 
-El riesgo principal es alterar accidentalmente el formato JSON o los codigos HTTP al mover la emision fuera del Router. Por eso Fase 2B debe ejecutar pruebas antes y despues cuando PHP este disponible.
+El riesgo principal era alterar accidentalmente el formato JSON o los codigos HTTP al mover la emision fuera del Router. Se controlo ejecutando pruebas antes y despues del refactor, mas validacion HTTP del envelope `status`/`data`.
 
 ## 8. Tests relacionados
 
-Pruebas a ejecutar en Fase 2B:
+Pruebas ejecutadas en Fase 2B:
 
 ```text
 php bin/console.php migrate:fresh --seed
@@ -126,7 +127,13 @@ php bin/console.php test
 php bin/console.php test --filter=Mod15PrescriptionTest
 ```
 
-Tambien deben repetirse pruebas HTTP relevantes para confirmar que la respuesta mantiene el mismo formato.
+Resultado post-refactor:
+
+- `Migration completed`.
+- `Tests: 6, Failed: 0`.
+- `Tests: 5, Failed: 0` con `Mod15PrescriptionTest`.
+- HTTP conserva `200`, `201`, `409`, `201`, `403`, `422`, `404`.
+- El JSON conserva `status` y `data` en todos los casos probados.
 
 ## 9. Refactors no seleccionados
 
@@ -136,12 +143,36 @@ Tambien deben repetirse pruebas HTTP relevantes para confirmar que la respuesta 
 | Centralizar default de `date` | MEDIA | Postergado; duplicidad menor, no bloquea el diseno actual. |
 | Dividir `CreatePrescriptionUseCase` | NO NECESARIA | No se justifica actualmente; podria sobredisenar. |
 
-## 10. Impacto funcional esperado
+## 10. Impacto funcional observado
 
-Impacto funcional esperado: ninguno. El cambio debe ser puramente estructural.
+Impacto funcional observado: ninguno. El cambio fue puramente estructural.
 
-La evidencia esperada para cerrar Semana 7 debe demostrar:
+La evidencia demuestra:
 
 ```text
 estructura modificada, comportamiento preservado
 ```
+
+## 11. Antes vs despues
+
+Antes:
+
+- `Router` registraba rutas.
+- `Router` hacia dispatch.
+- `Router` configuraba status HTTP.
+- `Router` configuraba `Content-Type`.
+- `Router` ejecutaba `json_encode`.
+- `Router` imprimia la respuesta.
+
+Despues:
+
+- `Router` registra rutas.
+- `Router` hace dispatch.
+- `Router` conserva 404, 500 generico y extraccion status/body.
+- `Router` delega salida a `JsonResponseEmitter`.
+- `JsonResponseEmitter` configura status HTTP.
+- `JsonResponseEmitter` configura `Content-Type`.
+- `JsonResponseEmitter` ejecuta `json_encode`.
+- `JsonResponseEmitter` emite la respuesta.
+
+No se modificaron reglas clinicas, DTOs, contratos Repository, persistencia, auditoria, migraciones, seeds ni endpoints.

@@ -19,14 +19,14 @@ Problema detectado: concentra composicion de dependencias y wiring HTTP en el fr
 
 | Campo | Detalle |
 |---|---|
-| Archivos | `src/Presentation/Router.php`, `src/Presentation/Controllers/PrescriptionController.php`, `src/Presentation/Requests/CreatePrescriptionRequest.php` |
-| Responsabilidad | Resolver rutas HTTP, adaptar payload a request validado, llamar al caso de uso y devolver arreglo de respuesta. |
-| Dependencias | `CreatePrescriptionUseCase`, `CreatePrescriptionInput`, `InvalidArgumentException`. |
+| Archivos | `src/Presentation/Router.php`, `src/Presentation/Responses/JsonResponseEmitter.php`, `src/Presentation/Controllers/PrescriptionController.php`, `src/Presentation/Requests/CreatePrescriptionRequest.php` |
+| Responsabilidad | Resolver rutas HTTP, adaptar payload a request validado, llamar al caso de uso y emitir respuesta JSON mediante un emisor dedicado. |
+| Dependencias | `JsonResponseEmitter`, `CreatePrescriptionUseCase`, `CreatePrescriptionInput`, `InvalidArgumentException`. |
 | Entrada | Metodo, path y payload JSON ya decodificado. |
-| Salida | Arreglo con `status`, `message` y `prescription`, emitido como JSON por el Router actual. |
+| Salida | Arreglo con `status`, `message` y `prescription`, emitido como JSON por `JsonResponseEmitter`. |
 | Capa | Presentation. |
 
-Problema detectado: `Router` mezcla routing/dispatch con emision HTTP/JSON. Este es el refactor seleccionado para Semana 7.
+Problema detectado y resuelto en Semana 7: `Router` mezclaba routing/dispatch con emision HTTP/JSON. La emision se separo en `JsonResponseEmitter` sin cambiar el contrato observable.
 
 ## 3. Application
 
@@ -130,4 +130,4 @@ Problema detectado: sin cambios. Semana 7 no modifica esquema, seeds ni almacena
 | Salida | Resultados de pruebas y conteos `Tests`/`Failed`. |
 | Capa | Tests / adapters. |
 
-Problema detectado: tests protegen comportamiento principal. En Fase 2B se deben ejecutar antes y despues del refactor.
+Problema detectado: tests protegen comportamiento principal. En Fase 2B se ejecutaron antes y despues del refactor para confirmar que no cambiara el comportamiento observable.

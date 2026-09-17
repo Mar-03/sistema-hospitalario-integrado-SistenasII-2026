@@ -2,12 +2,12 @@
 
 ## 1. Objetivo
 
-Semana 7 analiza los componentes internos del modulo ASII-15 y define una refactorizacion pequena, justificada y segura. La pregunta central es: que componentes existen, que responsabilidades tienen y que cambio mejora el diseno sin cambiar el comportamiento observable.
+Semana 7 analiza los componentes internos del modulo ASII-15 y aplica una refactorizacion pequena, justificada y segura. La pregunta central es: que componentes existen, que responsabilidades tienen y que cambio mejora el diseno sin cambiar el comportamiento observable.
 
-Esta entrega se divide en dos fases:
+Esta entrega se dividio en dos fases:
 
-- Fase 2A: analisis, diseno, documentacion y diagrama. No modifica codigo funcional.
-- Fase 2B: implementacion del refactor y validacion antes/despues, solo cuando PHP este disponible.
+- Fase 2A: analisis, diseno, documentacion y diagrama fuente. No modifico codigo funcional.
+- Fase 2B: implementacion del refactor y validacion antes/despues con PHP portable.
 
 ## 2. Continuidad con Semanas 4-6
 
@@ -20,7 +20,7 @@ La base de la rama S7 es `origin/developer` en `8fe8237ed2662664d7f2dd58316dee46
 Componentes reales confirmados por lectura del codigo:
 
 - Entrada HTTP / Composition Root: `public/index.php`.
-- Presentation: `Router`, `PrescriptionController`, `CreatePrescriptionRequest`.
+- Presentation: `Router`, `JsonResponseEmitter`, `PrescriptionController`, `CreatePrescriptionRequest`.
 - Application: `CreatePrescriptionUseCase`, `CreatePrescriptionInput`, `CreatePrescriptionResult`.
 - Domain: entidades, Value Objects y excepciones.
 - Clinical Validation: `AllergyConflictDetector`, `Dose`, `AdministrationRoute`, `Frequency`.
@@ -34,26 +34,27 @@ Detalle completo: `ascii15/semana-07/componentes.md`.
 
 ## 4. Problema seleccionado
 
-El problema seleccionado es que `src/Presentation/Router.php` mezcla routing/dispatch con emision HTTP/JSON. Actualmente registra rutas, localiza el handler, ejecuta el handler, extrae el status, configura `http_response_code`, define `Content-Type`, serializa con `json_encode` e imprime la respuesta.
+El problema seleccionado fue que `src/Presentation/Router.php` mezclaba routing/dispatch con emision HTTP/JSON. Antes del refactor registraba rutas, localizaba el handler, ejecutaba el handler, extraia el status, configuraba `http_response_code`, definia `Content-Type`, serializaba con `json_encode` e imprimia la respuesta.
 
-Esto funciona, pero concentra responsabilidades distintas en una misma clase.
+Esto funcionaba, pero concentraba responsabilidades distintas en una misma clase.
 
 ## 5. Refactor elegido
 
-El refactor elegido para Fase 2B es separar la emision de respuesta JSON en un componente dedicado propuesto:
+El refactor implementado en Fase 2B separa la emision de respuesta JSON en un componente dedicado:
 
 ```text
 src/Presentation/Responses/JsonResponseEmitter.php
 ```
 
-Responsabilidad futura del Router:
+Responsabilidad actual del Router:
 
 - Registrar rutas.
 - Localizar handlers.
 - Ejecutar dispatch.
-- Delegar la respuesta al emisor.
+- Mantener 404 y 500 generico.
+- Delegar la respuesta al emisor JSON.
 
-Responsabilidad futura del JsonResponseEmitter:
+Responsabilidad actual del JsonResponseEmitter:
 
 - Recibir `status` y `body`.
 - Configurar `http_response_code`.
@@ -61,21 +62,21 @@ Responsabilidad futura del JsonResponseEmitter:
 - Serializar el formato JSON actual.
 - Emitir la respuesta.
 
-Este refactor no debe cambiar endpoints, codigos HTTP, payloads, tablas, seeds, reglas clinicas, persistencia ni auditoria.
+Este refactor no cambia endpoints, codigos HTTP, payloads, tablas, seeds, reglas clinicas, persistencia ni auditoria.
 
 ## 6. Refactors no seleccionados
 
-- Extraer Composition Root: prioridad MEDIA. Puede mejorar `public/index.php`, pero amplia el alcance y no es el problema principal de esta semana.
+- Extraer Composition Root: prioridad MEDIA. Puede mejorar `public/index.php`, pero amplia el alcance y no era el problema principal de esta semana.
 - Centralizar default de `date`: prioridad MEDIA. Existe duplicidad menor entre request y DTO, pero no afecta el objetivo principal.
 - Dividir `CreatePrescriptionUseCase`: NO NECESARIA actualmente. La clase concentra orquestacion, pero el tamano y el alcance siguen siendo manejables.
 
 Semana 7 mantiene un solo refactor principal para evitar cambios innecesarios.
 
-## 7. Comportamiento que debe preservarse
+## 7. Comportamiento preservado
 
-El comportamiento observable debe permanecer identico:
+El comportamiento observable se preservo:
 
-| Caso | Codigo esperado |
+| Caso | Codigo post-refactor |
 |---|---|
 | `GET /health` | `200` |
 | `POST /prescriptions` valida | `201` |
@@ -84,22 +85,27 @@ El comportamiento observable debe permanecer identico:
 | Excepcion incompleta | `403` |
 | Datos invalidos | `422` |
 | Ruta inexistente | `404` |
-| Falla de persistencia | `500` |
+| Falla de persistencia | `500` por test |
 
-Persistencia esperada:
+Persistencia post-refactor:
 
-- Caso feliz persiste.
-- `409` no persiste.
-- `403` no persiste.
-- `422` no persiste.
-- Excepcion autorizada persiste.
-- Auditoria `authorized_exception` continua funcionando.
+- `prescriptions = 2`.
+- `prescription_audits = 1`.
+- `authorized_exception = 1`.
 
-## 8. Estado actual de validacion
+## 8. Estado de validacion
 
-PHP no esta disponible en el entorno actual. Por eso Fase 2A no ejecuta `migrate:fresh`, tests ni pruebas HTTP. La ultima validacion funcional confirmada corresponde a Semana 5 y queda registrada como baseline historico en `evidencia-validacion.md`.
+Para Fase 2B se preparo PHP 8.3.33 portable fuera del repositorio y se ejecuto validacion antes/despues.
 
-La validacion actual y post-refactor queda pendiente para Fase 2B.
+Validacion final:
+
+- `php bin/console.php migrate:fresh --seed` -> `Migration completed`.
+- Tests generales -> `Tests: 6, Failed: 0`.
+- `Mod15PrescriptionTest` -> `Tests: 5, Failed: 0`.
+- HTTP preservado: `200`, `201`, `409`, `201`, `403`, `422`, `404`.
+- JSON preservado con envelope `status` + `data`.
+- Falla de persistencia -> `500` por test automatizado.
+- Persistencia y auditoria preservadas.
 
 ## 9. Entregables
 
@@ -109,8 +115,10 @@ La validacion actual y post-refactor queda pendiente para Fase 2B.
 - `ascii15/semana-07/evidencia-validacion.md`.
 - `ascii15/semana-07/evidencia-git.md`.
 - `ascii15/semana-07/diagramas/componentes.puml`.
-- `ascii15/semana-07/diagramas/componentes.png` queda pendiente si PlantUML no esta disponible.
-- `DECLARACION_IA.md` actualizado.
+- `ascii15/semana-07/diagramas/componentes.png`.
+- `src/Presentation/Responses/JsonResponseEmitter.php`.
+- `src/Presentation/Router.php` refactorizado.
+- `DECLARACION_IA.md` actualizado si corresponde.
 
 ## 10. Rama/worktree
 

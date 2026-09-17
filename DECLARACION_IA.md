@@ -45,7 +45,9 @@ Las herramientas de inteligencia artificial se utilizaron como apoyo para:
 - Analizar los componentes internos reales de ASII-15 para Semana 7 sin inventar clases ni endpoints.
 - Revisar responsabilidades entre entrada HTTP, Presentation, Application, Domain, contratos Repository, adaptadores de persistencia, auditoria y tests.
 - Identificar oportunidades de refactorizacion y seleccionar una mejora arquitectonica pequena: separar la emision JSON del Router.
-- Apoyar la documentacion y el diagrama de componentes internos, dejando claro que la implementacion queda pendiente para Fase 2B.
+- Apoyar la documentacion y el diagrama de componentes internos, dejando claro en Fase 2A que la implementacion quedaba pendiente para Fase 2B.
+- Apoyar la implementacion controlada de Semana 7 separando `JsonResponseEmitter` desde `Router` sin cambiar contrato HTTP ni reglas clinicas.
+- Revisar la evidencia antes/despues del refactor: lint, migracion, tests, HTTP, persistencia y auditoria.
 
 
 ## Prompts relevantes
@@ -76,11 +78,13 @@ Las herramientas de inteligencia artificial se utilizaron como apoyo para:
 - "Documenta Semana 7 Fase 2A con componentes reales, responsabilidades y refactor propuesto sin modificar codigo".
 - "Disena la separacion futura de JsonResponseEmitter desde Router preservando contrato HTTP y formato JSON".
 - "Genera un diagrama PlantUML de componentes internos diferente al diagrama cliente-servidor de Semana 5".
+- "Implementa el refactor minimo de Semana 7 separando la emision JSON del Router y valida que el comportamiento observable no cambie".
+- "Actualiza la evidencia de Semana 7 con baseline pre-refactor, validacion post-refactor, persistencia y auditoria reales".
 
 
 ## Partes aceptadas o modificadas
 
-Las propuestas generadas por IA fueron revisadas manualmente antes de aceptarse. Se modificaron nombres, actores, casos de uso, flujos alternativos, mensajes, estructura de los diagramas, RF/RNF, criterios de aceptacion, justificacion SOLID y la organizacion de la evidencia y del diagrama C4/UML de Semana 3 para mantener coherencia con la asignacion individual y con el repositorio. En Semana 4 se ajusto la redaccion de capas, responsabilidades, inventario de objetos reutilizables, analisis del repositorio de datos compartido, diagramas PlantUML y evidencia Git para reflejar exactamente el codigo real del Micro-HIS. En Semana 5 se reviso que el contrato REST, los payloads, las validaciones, los codigos HTTP, los permisos, el analisis de monolito vs microservicio y la evidencia (HTTP, persistencia y auditoria) coincidan exactamente con el codigo y con la ejecucion real, sin presentar diseno futuro como implementado. En Semana 6 se acepto solo apoyo documental para revisar el estado acumulado, organizar evidencia del Primer Parcial, validar consistencia y registrar trazabilidad; no se atribuye a la IA implementacion de funcionalidad nueva. En Semana 7 Fase 2A se acepto apoyo para analizar componentes, comparar responsabilidades, seleccionar un refactor propuesto y preparar documentacion/diagrama; todavia no se atribuye implementacion de codigo.
+Las propuestas generadas por IA fueron revisadas manualmente antes de aceptarse. Se modificaron nombres, actores, casos de uso, flujos alternativos, mensajes, estructura de los diagramas, RF/RNF, criterios de aceptacion, justificacion SOLID y la organizacion de la evidencia y del diagrama C4/UML de Semana 3 para mantener coherencia con la asignacion individual y con el repositorio. En Semana 4 se ajusto la redaccion de capas, responsabilidades, inventario de objetos reutilizables, analisis del repositorio de datos compartido, diagramas PlantUML y evidencia Git para reflejar exactamente el codigo real del Micro-HIS. En Semana 5 se reviso que el contrato REST, los payloads, las validaciones, los codigos HTTP, los permisos, el analisis de monolito vs microservicio y la evidencia (HTTP, persistencia y auditoria) coincidan exactamente con el codigo y con la ejecucion real, sin presentar diseno futuro como implementado. En Semana 6 se acepto solo apoyo documental para revisar el estado acumulado, organizar evidencia del Primer Parcial, validar consistencia y registrar trazabilidad; no se atribuye a la IA implementacion de funcionalidad nueva. En Semana 7 Fase 2A se acepto apoyo para analizar componentes, comparar responsabilidades, seleccionar un refactor propuesto y preparar documentacion/diagrama. En Semana 7 Fase 2B se acepto apoyo para implementar el refactor minimo `JsonResponseEmitter`, actualizar la evidencia y verificar que no hubiera cambios observables de comportamiento.
 
 ## Validacion humana
 
@@ -122,8 +126,11 @@ La estudiante verifico manualmente:
 - Que Semana 7 queda solo diagnosticada en modo lectura y no se crea rama, worktree ni archivos de esa semana.
 - Que Semana 7 parte del `origin/developer` actualizado que contiene el merge de Semana 6.
 - Que la Fase 2A de Semana 7 documenta componentes y diseno de refactor sin modificar backend.
-- Que el refactor seleccionado es separar la emision JSON del Router mediante un componente propuesto `JsonResponseEmitter` pendiente de Fase 2B.
+- Que el refactor seleccionado fue separar la emision JSON del Router mediante `JsonResponseEmitter`, propuesto en Fase 2A e implementado en Fase 2B.
 - Que no se afirma ejecucion nueva de pruebas mientras PHP no este disponible.
+- Que Fase 2B implementa solamente `JsonResponseEmitter` y el ajuste minimo de `Router`.
+- Que no se modificaron endpoints, payloads, reglas clinicas, contratos Repository, persistencia, auditoria, migraciones ni seeds.
+- Que la validacion post-refactor conserva tests `6/6`, `Mod15PrescriptionTest 5/5`, codigos HTTP, envelope JSON `status`/`data`, persistencia y auditoria `authorized_exception`.
 
 ## Responsabilidad de autoria
 
