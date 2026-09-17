@@ -1,0 +1,25 @@
+@startsalt
+title Semana 9 - Wireframe baja fidelidad: Alerta accesible y excepcion
+{
+  {^"ALERTA CLINICA CRITICA: ALERGIA"}
+  {"Se detecto un conflicto de alergia."}
+  {"LA PRESCRIPCION NO FUE REGISTRADA."}
+  {"La alerta usa texto explicito y no depende solo de color."}
+  --
+  { [Modificar prescripcion] }
+  { [Cancelar] }
+  { [Iniciar excepcion autorizada] }
+  --
+  {^"EXCEPCION AUTORIZADA"}
+  {"Esta accion requiere justificar el motivo y registrar quien autoriza."}
+  {"Motivo *" | "[ Riesgo aceptado por especialista           ]"}
+  {"Autorizado por *" | "[ doctor-9                                  ]"}
+  { [Confirmar excepcion autorizada y registrar] }
+  --
+  {^"Si la autorizacion esta incompleta"}
+  {"Mensaje" | "No fue posible autorizar la excepcion."}
+  {"Complete" | "motivo; autorizado por."}
+  --
+  {"Trazabilidad" | "409 alerta | reenvio POST /prescriptions | 201 exito | 403 incompleta"}
+}
+@endsalt
